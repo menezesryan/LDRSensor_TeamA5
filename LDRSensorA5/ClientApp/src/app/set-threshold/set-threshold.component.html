@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <form [formGroup] = "ThresholdForm" (ngSubmit)="onThresholdSumbit(ThresholdForm.value)" class="ui form">
+                <div class="form-group">
+                  <label for="lowerThreshold">Lower Threshold</label>
+                  <input type="number" formControlName="lowerThreshold" class="form-control" id="lowerThreshold" aria-describedby="lowerHelp" placeholder="Enter Lower Threshold">
+                  <small id="lowerHelp" class="form-text text-muted">Lower threshold should not be less than x lux</small>
+                </div>
+                <div class="form-group">
+                  <label for="upperThreshold">Upper Threshold</label>
+                  <input type="number" formControlName="upperThreshold" class="form-control" id="upperThreshold"  aria-describedby="upperHelp" placeholder="Enter Upper Threshold">
+                  <small id="upperHelp" class="form-text text-muted">Upper threshold should not be greater than x lux</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary">Save Threshold Values</button>
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary">Reset Threshold Values</button>
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary">View Graph</button>
+        </div>
+    </div>
+</div>
