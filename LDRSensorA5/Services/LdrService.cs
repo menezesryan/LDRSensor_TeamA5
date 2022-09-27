@@ -4,6 +4,14 @@ namespace LDRSensorA5.Services
 {
     public class LdrService : ILdrService
     {
+        public LDRData GetLDRData()
+        {
+            ResponseModel model = new ResponseModel();
+            LDRData data = new LDRData();
+            return data;
+            
+        }
+
         public ResponseModel ResetThresholdValues(string command)
         {
             ResponseModel model = new ResponseModel();
@@ -21,6 +29,13 @@ namespace LDRSensorA5.Services
                 model.IsSucess = false;
                 model.Message = "Error: " + ex.Message;
             }
+
+            return model;
+        }
+
+        public ResponseModel SaveThresholdValues(LightThreshold threshold)
+        {
+            ResponseModel model = new ResponseModel();
 
             return model;
         }
