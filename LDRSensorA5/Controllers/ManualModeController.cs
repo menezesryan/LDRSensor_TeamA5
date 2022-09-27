@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LDRSensorA5.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ManualModeController : ControllerBase
     {
@@ -20,8 +20,8 @@ namespace LDRSensorA5.Controllers
         {
             try
             {
-                //do something
-                return Ok();
+                var model = _manualModeService.SetCurrentValue(current);
+                return Ok(model);
             }
             catch (Exception)
             {
@@ -35,8 +35,8 @@ namespace LDRSensorA5.Controllers
         {
             try
             {
-                //do something
-                return Ok();
+                var model = _manualModeService.SetRelayState(relayState);
+                return Ok(model);
             }
             catch (Exception)
             {

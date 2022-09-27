@@ -14,8 +14,11 @@ namespace LDRSensorA5
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddScoped<ILdrService,LdrService>();
+            builder.Services.AddScoped<IManualModeService, ManualModeService>();
 
             builder.Services.AddDbContext<LdrDBContext>();
+
+            builder.Services.AddSwaggerGen();
 
             builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
             {
@@ -31,11 +34,11 @@ namespace LDRSensorA5
                 //use context
             }
 
-            if(app.Environment.IsDevelopment())
-            {
+            //if(app.Environment.IsDevelopment())
+            //{
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+            //}
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

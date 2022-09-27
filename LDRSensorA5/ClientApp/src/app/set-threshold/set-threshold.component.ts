@@ -27,8 +27,26 @@ export class SetThresholdComponent implements OnInit {
   {
     console.log(value.lowerThreshold)
     console.log(value.upperThreshold)
+    this.lightThreshold = new LightThreshold(value.lowerThreshold, value.upperThreshold)
+
+    this.ldrService.setThresholdValues(this.lightThreshold).subscribe()
 
     this.ThresholdForm.reset()
+  }
+
+  onSaveThresholdSubmit()
+  {
+    //get the threshold values from somewhere
+    this.lightThreshold = new LightThreshold(0,0)   
+    this.ldrService.saveThresholdValues(this.lightThreshold).subscribe()
+  }
+
+  onResetThresholdSubmit()
+  {
+    //get the default threshold values
+    //make a new threshold object and store these values
+    this.lightThreshold = new LightThreshold(0,0)
+    this.ldrService.resetThresholdValues().subscribe()
   }
 
 }

@@ -6,8 +6,16 @@ namespace LDRSensorA5.Services
     {
         public LDRData GetLDRData()
         {
-            ResponseModel model = new ResponseModel();
-            LDRData data = new LDRData();
+            LDRData data;
+            try
+            {
+                data = new LDRData();
+
+            }
+            catch(Exception)
+            {
+                throw;
+            }
             return data;
             
         }
@@ -37,6 +45,18 @@ namespace LDRSensorA5.Services
         {
             ResponseModel model = new ResponseModel();
 
+            try
+            {
+                //do something
+                model.IsSucess = true;
+                model.Message = "Threshold values saved successfully";
+            }
+            catch(Exception ex)
+            {
+                model.IsSucess = false;
+                model.Message = "Error: " + ex.Message;
+            }
+
             return model;
         }
 
@@ -47,7 +67,7 @@ namespace LDRSensorA5.Services
             try
             {
                 //send data to the MCU
-                //update data in the json file
+                //update data
 
                 model.IsSucess = true;
                 model.Message = "Threshold values updated";

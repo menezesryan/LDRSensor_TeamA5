@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LDRSensorA5.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class LdrController : ControllerBase
     {
@@ -14,14 +14,36 @@ namespace LDRSensorA5.Controllers
         {
             this._ldrService = ldrService;
         }
-        [HttpPost]
+
+        [HttpGet]
         [Route("[action]")]
-        public IActionResult UpdateThreshold(LightThreshold threshold)
+        public IActionResult GetLDRData()
         {
             try
             {
-                //do something
-                return Ok();
+                var LdrData = _ldrService.GetLDRData();
+                if(LdrData == null)
+                {
+                    return NotFound();
+                }
+                return Ok(LdrData);
+            }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult SaveThreshold(LightThreshold threshold)
+        {
+            try
+            {
+                var model = _ldrService.SaveThresholdValues(threshold);
+                return Ok(model);
             }
             catch(Exception)
             {
@@ -35,8 +57,24 @@ namespace LDRSensorA5.Controllers
         {
             try
             {
-                //do something
-                return Ok();
+                var model = _ldrService.ResetThresholdValues(command);
+                return Ok(model);
+            }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult SetThreshold(LightThreshold threshold)
+        {
+            try
+            {
+                var model = _ldrService.SetThresholdValues(threshold);
+                return Ok(model);
+
             }
             catch(Exception)
             {

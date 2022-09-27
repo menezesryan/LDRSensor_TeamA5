@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { throwError } from 'rxjs';
+import { catchError, retry, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class ManualModeService {
     })
   }
   constructor(private httpClient : HttpClient) {
-    this.baseUrl = 'https://localhost:4200'
+    this.baseUrl = 'https://localhost:7124/ManualMode'
    }
 
    httpError(error:HttpErrorResponse){
@@ -31,11 +31,19 @@ export class ManualModeService {
 
   setRelayState(relayState:boolean)
   {
-
+    return this.httpClient.post(this.baseUrl+'/SetRelayState', JSON.stringify(relayState), this.httpHeader)
+    .pipe(
+      retry(1),
+      catchError(this.httpError)
+    )
   }
 
   setCurrentValue(current:number)
   {
-
+    return this.httpClient.post(this.baseUrl+'/SetCurrentValue', JSON.stringify(current), this.httpHeader)
+    .pipe(
+      retry(1),
+      catchError(this.httpError)
+    )
   }
 }

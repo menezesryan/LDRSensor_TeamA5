@@ -15,7 +15,7 @@ export class LDRService {
     })
   }
   constructor(private httpClient :HttpClient) { 
-    this.baseUrl = 'https://localhost:4200'
+    this.baseUrl = 'https://localhost:7124/Ldr'
   }
 
   httpError(error:HttpErrorResponse){
@@ -32,7 +32,7 @@ export class LDRService {
 
   setThresholdValues(threshold : LightThreshold)
   {
-     return this.httpClient.post(this.baseUrl + '',JSON.stringify(threshold), this.httpHeader)
+     return this.httpClient.post(this.baseUrl + '/SetThreshold',JSON.stringify(threshold), this.httpHeader)
      .pipe(
       retry(1),
       catchError(this.httpError)
@@ -41,7 +41,7 @@ export class LDRService {
 
   saveThresholdValues(threshold : LightThreshold)
   {
-    return this.httpClient.post(this.baseUrl + '', JSON.stringify(threshold), this.httpHeader)
+    return this.httpClient.post(this.baseUrl + '/SaveThreshold', JSON.stringify(threshold), this.httpHeader)
     .pipe(
       retry(1),
       catchError(this.httpError)
@@ -50,7 +50,7 @@ export class LDRService {
 
   resetThresholdValues()
   {
-    return this.httpClient.post(this.baseUrl+'',JSON.stringify("reset"), this.httpHeader)
+    return this.httpClient.post(this.baseUrl+'/ResetThreshold',JSON.stringify("reset"), this.httpHeader)
     .pipe(
       retry(1),
       catchError(this.httpError)
@@ -59,7 +59,7 @@ export class LDRService {
 
   getLDRData() : Observable<LDRData>
   {
-    return this.httpClient.get<LDRData>(this.baseUrl)
+    return this.httpClient.get<LDRData>(this.baseUrl + '/GetLDRData', this.httpHeader)
     .pipe(
       retry(1),
       catchError(this.httpError)
@@ -68,7 +68,7 @@ export class LDRService {
 
   getRelayState()
   {
-    
+
   }
 
 }
