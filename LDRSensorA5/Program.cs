@@ -15,6 +15,7 @@ namespace LDRSensorA5
 
             builder.Services.AddScoped<ILdrService,LdrService>();
             builder.Services.AddScoped<IManualModeService, ManualModeService>();
+            builder.Services.AddScoped<IConnectionService, ConnectionService>();
 
             builder.Services.AddDbContext<LdrDBContext>();
 

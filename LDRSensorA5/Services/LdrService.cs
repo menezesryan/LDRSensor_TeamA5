@@ -48,6 +48,7 @@ namespace LDRSensorA5.Services
             try
             {
                 //do something
+                //send command to 
                 model.IsSucess = true;
                 model.Message = "Threshold values saved successfully";
             }
