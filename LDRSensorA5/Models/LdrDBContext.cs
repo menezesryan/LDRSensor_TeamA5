@@ -18,7 +18,7 @@ namespace LDRSensorA5.Models
                    .AddJsonFile("appsettings.json")
                    .Build();
                 var connectionString = configuration.GetConnectionString("ConStr");
-                //optionsBuilder.UseSqlServer(connectionString);
+                optionsBuilder.UseSqlite(connectionString);
                 optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                 optionsBuilder.EnableSensitiveDataLogging();
 
