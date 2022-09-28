@@ -4,13 +4,29 @@ namespace LDRSensorA5.Services
 {
     public class LdrService : ILdrService
     {
+        LdrDBContext _dbContext;
+
+        public LdrService(LdrDBContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public LDRData GetLDRData()
         {
-            LDRData data;
+            LDRData data = new LDRData();
             try
             {
-                data = new LDRData();
+                //get data from the port  
+                Random random = new Random();
+                var x = random.Next(1, 20);
+                data.Lux = x;
+                data.Current = (float)(x * 1.75);
+                data.TimeStamp = DateTime.Now;
 
+                //save data to database
+
+                _dbContext.Add<LDRData>(data);
+                _dbContext.SaveChanges();
             }
             catch(Exception)
             {
@@ -58,7 +74,6 @@ namespace LDRSensorA5.Services
                 model.IsSucess = false;
                 model.Message = "Error: " + ex.Message;
             }
-
             return model;
         }
     }

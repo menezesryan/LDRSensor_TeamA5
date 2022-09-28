@@ -39,6 +39,8 @@ export class LDRService {
      )
   }
 
+ 
+
   resetThresholdValues()
   {
     return this.httpClient.post(this.baseUrl+'/ResetThreshold',JSON.stringify("reset"), this.httpHeader)
@@ -55,11 +57,6 @@ export class LDRService {
       retry(1),
       catchError(this.httpError)
     )
-  }
-
-  getRelayState()
-  {
-
   }
 
 }

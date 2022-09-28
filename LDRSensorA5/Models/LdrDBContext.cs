@@ -24,5 +24,7 @@ namespace LDRSensorA5.Models
 
             }
         }
+
+        public DbSet<LDRData>LDRData { get; set; }
     }
 }

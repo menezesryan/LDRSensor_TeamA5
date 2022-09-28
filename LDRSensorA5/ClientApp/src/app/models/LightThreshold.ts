@@ -1,10 +1,10 @@
 export class LightThreshold {
-    LowerThreshold : number
-    UpperThreshold : number
+    lowerThreshold : number
+    upperThreshold : number
 
     constructor(LowerThreshold : number, UpperThreshold:number)
     {
-        this.LowerThreshold = LowerThreshold
-        this.UpperThreshold = UpperThreshold
+        this.lowerThreshold = LowerThreshold
+        this.upperThreshold = UpperThreshold
     }
 }

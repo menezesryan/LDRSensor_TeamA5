@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Chart,registerables } from 'chart.js';
 import { LDRService } from '../ldr.service';
@@ -12,6 +13,8 @@ import { LDRData } from '../models/LDRData';
 export class GraphComponent implements OnInit {
   chart : Chart | undefined
   ldrData:LDRData
+  XAxisLabels:string[] =[]
+  YAxisValues:number[]=[]
 
   constructor(private ldrService:LDRService) {
     Chart.register(...registerables);
@@ -23,10 +26,10 @@ export class GraphComponent implements OnInit {
       this.chart = new Chart(ctx, {
           type: 'bar',
           data: {
-              labels: ['Time'],
+              labels: this.XAxisLabels,
               datasets: [{
                   label: 'Current',
-                  data: [0],
+                  data: this.YAxisValues,
                   backgroundColor: [
                       'rgba(255, 99, 132, 0.2)'
                   ],
@@ -39,19 +42,31 @@ export class GraphComponent implements OnInit {
       });
 
       let counter =0;
-      // setInterval(()=>{
-      //   this.plotUpdates(counter) 
-      // },1000);
+      setInterval(()=>{
+        this.ldrService.getLDRData().subscribe(data=>{
+          this.ldrData = data;
+          this.plotUpdates(data)
+        })
+         
+      },1000);
   }
 
-  plotUpdates(counter:number)
+  plotUpdates(ldrData:LDRData)
   {
-    let val = Math.ceil(Math.random() * (10 - 2 + 1) + 2)
-    console.log(val)
-    this.chart?.data.datasets[0].data.push(val)
-    this.chart?.data.labels?.push(counter);
-    counter++;
+    console.log(ldrData)
+    // this.chart?.data.datasets[0].data.push(ldrData.current)
+    // this.chart?.data.labels?.push(ldrData.timeStamp);
+    if(this.XAxisLabels.length>10)
+    {
+      this.XAxisLabels.shift()
+      this.YAxisValues.shift()
+    }
+
+    var datepipe = new DatePipe("en-US")
+    var time = datepipe.transform(ldrData.timeStamp,"mediumTime")
+  
+    this.XAxisLabels.push(time!)
+    this.YAxisValues.push(ldrData.current)
     this.chart?.update()
-    
   }
 }

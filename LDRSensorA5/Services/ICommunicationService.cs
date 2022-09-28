@@ -1,5 +1,6 @@
 ﻿using LDRSensorA5.Models;
 using Microsoft.AspNetCore.Routing.Constraints;
+using System.Globalization;
 
 namespace LDRSensorA5.Services
 {

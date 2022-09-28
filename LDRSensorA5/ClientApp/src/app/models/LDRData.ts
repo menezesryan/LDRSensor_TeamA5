@@ -1,13 +1,13 @@
 export class LDRData
 {
-    Lux : number
-    Current : number
-    TimeStamp : Date
+    lux : number
+    current : number
+    timeStamp : Date
 
     constructor(Current : number, Lux : number, TimeStamp : Date)
     {
-        this.Current = Current
-        this.Lux = Lux
-        this.TimeStamp = TimeStamp
+        this.current = Current
+        this.lux = Lux
+        this.timeStamp = TimeStamp
     }
 }
