@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ConnectionService } from '../connection.service';
+import { CommunicationService } from '../communication.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -8,18 +8,18 @@ import { ConnectionService } from '../connection.service';
 })
 export class NavBarComponent implements OnInit {
 
-  constructor(private connectionService: ConnectionService) { }
+  constructor(private communicationService: CommunicationService) { }
 
   ngOnInit(): void {
   }
 
   onConnectButtonClick()
   {
-    this.connectionService.connect().subscribe()
+    this.communicationService.connect().subscribe()
   }
   onDisconnectButtonClick()
   {
-    this.connectionService.disconnect().subscribe()
+    this.communicationService.disconnect().subscribe()
   }
   onManualButtonClick()
   {

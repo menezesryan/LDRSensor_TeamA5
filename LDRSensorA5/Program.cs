@@ -15,7 +15,7 @@ namespace LDRSensorA5
 
             builder.Services.AddScoped<ILdrService,LdrService>();
             builder.Services.AddScoped<IManualModeService, ManualModeService>();
-            builder.Services.AddScoped<IConnectionService, ConnectionService>();
+            builder.Services.AddScoped<ICommunicationService, CommunicationService>();
 
             builder.Services.AddDbContext<LdrDBContext>();
 
@@ -35,11 +35,11 @@ namespace LDRSensorA5
                 //use context
             }
 
-            //if(app.Environment.IsDevelopment())
-            //{
+            if (app.Environment.IsDevelopment())
+            {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            //}
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

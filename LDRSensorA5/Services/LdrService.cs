@@ -41,26 +41,6 @@ namespace LDRSensorA5.Services
             return model;
         }
 
-        public ResponseModel SaveThresholdValues(LightThreshold threshold)
-        {
-            ResponseModel model = new ResponseModel();
-
-            try
-            {
-                //do something
-                //send command to 
-                model.IsSucess = true;
-                model.Message = "Threshold values saved successfully";
-            }
-            catch(Exception ex)
-            {
-                model.IsSucess = false;
-                model.Message = "Error: " + ex.Message;
-            }
-
-            return model;
-        }
-
         public ResponseModel SetThresholdValues(LightThreshold threshold)
         {
             ResponseModel model = new ResponseModel();

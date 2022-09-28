@@ -39,15 +39,6 @@ export class LDRService {
      )
   }
 
-  saveThresholdValues(threshold : LightThreshold)
-  {
-    return this.httpClient.post(this.baseUrl + '/SaveThreshold', JSON.stringify(threshold), this.httpHeader)
-    .pipe(
-      retry(1),
-      catchError(this.httpError)
-    )
-  }
-
   resetThresholdValues()
   {
     return this.httpClient.post(this.baseUrl+'/ResetThreshold',JSON.stringify("reset"), this.httpHeader)

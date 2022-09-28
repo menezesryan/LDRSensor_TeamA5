@@ -34,13 +34,6 @@ export class SetThresholdComponent implements OnInit {
     this.ThresholdForm.reset()
   }
 
-  onSaveThresholdSubmit()
-  {
-    //get the threshold values from somewhere
-    this.lightThreshold = new LightThreshold(0,0)   
-    this.ldrService.saveThresholdValues(this.lightThreshold).subscribe()
-  }
-
   onResetThresholdSubmit()
   {
     //get the default threshold values

@@ -34,23 +34,6 @@ namespace LDRSensorA5.Controllers
             }
         }
 
-
-
-        [HttpPost]
-        [Route("[action]")]
-        public IActionResult SaveThreshold(LightThreshold threshold)
-        {
-            try
-            {
-                var model = _ldrService.SaveThresholdValues(threshold);
-                return Ok(model);
-            }
-            catch(Exception)
-            {
-                return BadRequest();
-            }
-        }
-
         [HttpPost]
         [Route("[action]")]
         public IActionResult ResetThreshold(String command)
