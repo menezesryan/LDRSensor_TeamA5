@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommunicationService } from '../communication.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { CommunicationService } from '../communication.service';
 })
 export class NavBarComponent implements OnInit {
 
-  constructor(private communicationService: CommunicationService) { }
+  constructor(private communicationService: CommunicationService, private router:Router) { }
 
   ngOnInit(): void {
   }
@@ -23,10 +24,13 @@ export class NavBarComponent implements OnInit {
   }
   onManualButtonClick()
   {
+    
     //navigate to manual component
+    this.router.navigate(['/manual-mode'])
   }
   onAutomaticButtonClick()
   {
     //navigate to automatic component
+    this.router.navigate(['/automatic-mode'])
   }
 }

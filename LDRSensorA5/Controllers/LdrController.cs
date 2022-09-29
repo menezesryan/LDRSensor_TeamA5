@@ -10,9 +10,11 @@ namespace LDRSensorA5.Controllers
     public class LdrController : ControllerBase
     {
         public ILdrService _ldrService;
-        public LdrController(ILdrService ldrService)
+        public ICommunicationService _communicationService;
+        public LdrController(ILdrService ldrService,ICommunicationService communication)
         {
             this._ldrService = ldrService;
+            this._communicationService = communication;
         }
 
         [HttpGet]
@@ -22,6 +24,7 @@ namespace LDRSensorA5.Controllers
             try
             {
                 var LdrData = _ldrService.GetLDRData();
+                var response = _communicationService.Connect("hello");
                 if(LdrData == null)
                 {
                     return NotFound();

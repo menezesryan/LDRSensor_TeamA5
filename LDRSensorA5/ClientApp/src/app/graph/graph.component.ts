@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Chart,registerables } from 'chart.js';
+import { Subscription } from 'rxjs';
 import { LDRService } from '../ldr.service';
 import { LDRData } from '../models/LDRData';
 
@@ -10,16 +11,27 @@ import { LDRData } from '../models/LDRData';
   styleUrls: ['./graph.component.css']
 })
 
-export class GraphComponent implements OnInit {
+export class GraphComponent implements OnInit, OnDestroy {
   chart : Chart | undefined
   ldrData:LDRData
+  subscription :Subscription
   XAxisLabels:string[] =[]
   YAxisValues:number[]=[]
+  intervalId : any
 
   constructor(private ldrService:LDRService) {
     Chart.register(...registerables);
     this.ldrData = new LDRData(0,0,new Date())
+    this.subscription = Subscription.EMPTY
+  
    }
+  ngOnDestroy(): void {
+    clearInterval(this.intervalId)
+    if(this.subscription)
+      this.subscription.unsubscribe()
+
+    this.chart?.destroy()
+  }
 
   ngOnInit(): void {
       const ctx = document.getElementById('myChart') as HTMLCanvasElement;
@@ -42,8 +54,8 @@ export class GraphComponent implements OnInit {
       });
 
       let counter =0;
-      setInterval(()=>{
-        this.ldrService.getLDRData().subscribe(data=>{
+      this.intervalId = setInterval(()=>{
+        this.subscription = this.ldrService.getLDRData().subscribe(data=>{
           this.ldrData = data;
           this.plotUpdates(data)
         })

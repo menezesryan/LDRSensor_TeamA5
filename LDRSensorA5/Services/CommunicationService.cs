@@ -32,7 +32,6 @@ namespace LDRSensorA5.Services
             try
             {
                 //do something
-
                 model.IsSucess = true;
                 model.Message = "Threshold Value reset successful";
             }

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { LDRService } from '../ldr.service';
 import { LightThreshold } from '../models/LightThreshold';
 
@@ -8,9 +9,11 @@ import { LightThreshold } from '../models/LightThreshold';
   templateUrl: './set-threshold.component.html',
   styleUrls: ['./set-threshold.component.css']
 })
-export class SetThresholdComponent implements OnInit {
+export class SetThresholdComponent implements OnInit, OnDestroy{
   ThresholdForm : FormGroup
   lightThreshold : LightThreshold
+  setThresholdSubscription : Subscription
+  resetThresholdSubscription : Subscription
   constructor(fb:FormBuilder, private ldrService : LDRService) {
     this.ThresholdForm = fb.group({
       'lowerThreshold':['',Validators.required],
@@ -18,7 +21,16 @@ export class SetThresholdComponent implements OnInit {
     })
 
     this.lightThreshold = new LightThreshold(0,0)
+    this.setThresholdSubscription = Subscription.EMPTY
+    this.resetThresholdSubscription = Subscription.EMPTY
    }
+  ngOnDestroy(): void {
+    if(this.setThresholdSubscription)
+      this.setThresholdSubscription.unsubscribe()
+    
+    if(this.resetThresholdSubscription)
+      this.resetThresholdSubscription.unsubscribe()
+  }
 
   ngOnInit(): void {
   }

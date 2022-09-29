@@ -1,4 +1,5 @@
 ﻿using LDRSensorA5.Models;
+using System.IO.Ports;
 
 namespace LDRSensorA5.Services
 {
@@ -17,10 +18,16 @@ namespace LDRSensorA5.Services
             try
             {
                 //get data from the port  
-                Random random = new Random();
-                var x = random.Next(1, 20);
-                data.Lux = x;
-                data.Current = (float)(x * 1.75);
+                SerialPort port = new SerialPort("COM2", 9600, Parity.None, 8, StopBits.One);
+                port.Open();
+                port.WriteLine("lux-getLux\r");
+                var command = port.ReadLine();
+                port.Close();
+
+                //Random random = new Random();
+                //var x = random.Next(1, 20);
+                data.Lux = Int32.Parse(command);
+                data.Current = (float)(Int32.Parse(command) * 1.75);
                 data.TimeStamp = DateTime.Now;
 
                 //save data to database
@@ -65,6 +72,11 @@ namespace LDRSensorA5.Services
             {
                 //send data to the MCU
                 //update data
+
+                SerialPort port = new SerialPort("COM2", 9600, Parity.None, 8, StopBits.One);
+                port.Open();
+                port.WriteLine("lux-luxSave- + " + threshold.LowerThreshold + "-" + threshold.UpperThreshold + "\r");
+                port.Close();
 
                 model.IsSucess = true;
                 model.Message = "Threshold values updated";

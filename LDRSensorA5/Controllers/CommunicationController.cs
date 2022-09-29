@@ -8,11 +8,11 @@ namespace LDRSensorA5.Controllers
     [ApiController]
     public class CommunicationController : ControllerBase
     {
-        public ICommunicationService _connectionService;
+        public ICommunicationService _communicationService;
 
-        public CommunicationController(ICommunicationService connectionService)
+        public CommunicationController(ICommunicationService communicationService)
         {
-            _connectionService = connectionService;
+            _communicationService = communicationService;
         }
 
         [HttpPost]
@@ -21,7 +21,7 @@ namespace LDRSensorA5.Controllers
         {
             try
             {
-                var model = _connectionService.Connect(command);
+                var model = _communicationService.Connect(command);
                 return Ok(model);
             }
             catch(Exception)
@@ -36,7 +36,7 @@ namespace LDRSensorA5.Controllers
         {
             try
             {
-                var model = _connectionService.Disconnect(command);
+                var model = _communicationService.Disconnect(command);
                 return Ok(model);
             }
             catch (Exception)

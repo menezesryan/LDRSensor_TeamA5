@@ -14,6 +14,7 @@ import { SetThresholdComponent } from './set-threshold/set-threshold.component';
 import { ManualModeComponent } from './manual-mode/manual-mode.component';
 import { GraphComponent } from './graph/graph.component';
 import { NgChartsModule } from 'ng2-charts';
+import { AutomaticModeComponent } from './automatic-mode/automatic-mode.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { NgChartsModule } from 'ng2-charts';
     SetThresholdComponent,
     ManualModeComponent,
     GraphComponent,
+    AutomaticModeComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
