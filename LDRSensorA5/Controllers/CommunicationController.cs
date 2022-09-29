@@ -1,4 +1,5 @@
-﻿using LDRSensorA5.Services;
+﻿using LDRSensorA5.Models;
+using LDRSensorA5.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,11 +18,11 @@ namespace LDRSensorA5.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public IActionResult Connect(string command)
+        public IActionResult Connect(ConnectionParameters parameters)
         {
             try
             {
-                var model = _communicationService.Connect(command);
+                var model = _communicationService.Connect(parameters);
                 return Ok(model);
             }
             catch(Exception)
@@ -32,11 +33,11 @@ namespace LDRSensorA5.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public IActionResult Disconnect(string command)
+        public IActionResult Disconnect(ConnectionParameters parameters)
         {
             try
             {
-                var model = _communicationService.Disconnect(command);
+                var model = _communicationService.Disconnect(parameters);
                 return Ok(model);
             }
             catch (Exception)

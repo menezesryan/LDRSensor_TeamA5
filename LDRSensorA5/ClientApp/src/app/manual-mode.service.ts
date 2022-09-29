@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, retry, throwError } from 'rxjs';
+import { ManualModeData } from './models/ManualModeData';
 
 @Injectable({
   providedIn: 'root'
@@ -29,18 +30,9 @@ export class ManualModeService {
     return throwError(msg);
   }
 
-  setRelayState(relayState:boolean)
+  sendCurrentAndRelayData(data:ManualModeData)
   {
-    return this.httpClient.post(this.baseUrl+'/SetRelayState', JSON.stringify(relayState), this.httpHeader)
-    .pipe(
-      retry(1),
-      catchError(this.httpError)
-    )
-  }
-
-  setCurrentValue(current:number)
-  {
-    return this.httpClient.post(this.baseUrl+'/SetCurrentValue', JSON.stringify(current), this.httpHeader)
+    return this.httpClient.post(this.baseUrl+'/SendCurrentAndRelayData',JSON.stringify(data),this.httpHeader)
     .pipe(
       retry(1),
       catchError(this.httpError)

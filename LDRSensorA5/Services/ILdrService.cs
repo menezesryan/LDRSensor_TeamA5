@@ -6,7 +6,6 @@ namespace LDRSensorA5.Services
     {
         ResponseModel SetThresholdValues(LightThreshold threshold);
         ResponseModel ResetThresholdValues(string command);
-
         LDRData GetLDRData();
 
     }

@@ -1,4 +1,5 @@
-﻿using LDRSensorA5.Services;
+﻿using LDRSensorA5.Models;
+using LDRSensorA5.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,28 +15,15 @@ namespace LDRSensorA5.Controllers
             _manualModeService = manualModeService;
         }
 
-        [HttpPost]
-        [Route("[action]")]
-        public IActionResult SetCurrentValue(float current)
-        {
-            try
-            {
-                var model = _manualModeService.SetCurrentValue(current);
-                return Ok(model);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
+        
 
         [HttpPost]
         [Route("[action]")]
-        public IActionResult SetRelayState(bool relayState)
+        public IActionResult SendCurrentAndRelayData(ManualModeData data)
         {
             try
             {
-                var model = _manualModeService.SetRelayState(relayState);
+                var model = _manualModeService.SendCurrentAndRelayData(data);
                 return Ok(model);
             }
             catch (Exception)

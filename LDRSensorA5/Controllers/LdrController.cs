@@ -24,7 +24,6 @@ namespace LDRSensorA5.Controllers
             try
             {
                 var LdrData = _ldrService.GetLDRData();
-                var response = _communicationService.Connect("hello");
                 if(LdrData == null)
                 {
                     return NotFound();

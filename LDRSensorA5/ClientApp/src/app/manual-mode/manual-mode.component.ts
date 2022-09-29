@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ManualModeService } from '../manual-mode.service';
+import { ManualModeData } from '../models/ManualModeData';
 
 @Component({
   selector: 'app-manual-mode',
@@ -34,8 +35,12 @@ export class ManualModeComponent implements OnInit {
     else
       this.state = false;
 
-    this.manualModeService.setCurrentValue(value.currentValue).subscribe()
-    this.manualModeService.setRelayState(this.state).subscribe()
+    var manualModeData = new ManualModeData(value.currentValue,this.state)
+    
+    this.manualModeService.sendCurrentAndRelayData(manualModeData).subscribe()
+
+    // this.manualModeService.setCurrentValue(value.currentValue).subscribe()
+    // this.manualModeService.setRelayState(this.state).subscribe()
     
   }
 

@@ -2,6 +2,7 @@ import { JsonPipe } from '@angular/common';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, retry, throwError } from 'rxjs';
+import { ConnectionParameters } from './models/ConnectionParameters';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class CommunicationService {
   }
 
   constructor(private httpClient : HttpClient) { 
-    this.baseUrl = 'https://localhost:7124/'
+    this.baseUrl = 'https://localhost:7124/Communication/'
   }
 
   httpError(error:HttpErrorResponse){
@@ -31,18 +32,18 @@ export class CommunicationService {
     return throwError(msg);
   }
 
-  connect()
+  connect(parameters:ConnectionParameters)
   {
-    return this.httpClient.post(this.baseUrl+'',JSON.stringify("connect"),this.httpHeader)
+    return this.httpClient.post(this.baseUrl+'Connect',JSON.stringify(parameters),this.httpHeader)
     .pipe(
       retry(1),
       catchError(this.httpError)
     )
   }
 
-  disconnect()
+  disconnect(parameters:ConnectionParameters)
   {
-    return this.httpClient.post(this.baseUrl+'',JSON.stringify("disconnect"),this.httpHeader)
+    return this.httpClient.post(this.baseUrl+'Disconnect',JSON.stringify(parameters),this.httpHeader)
     .pipe(
       retry(1),
       catchError(this.httpError)

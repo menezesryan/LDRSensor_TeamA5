@@ -13,10 +13,10 @@ namespace LDRSensorA5
 
             builder.Services.AddControllersWithViews();
 
-            
+            builder.Services.AddSingleton<ICommunicationService,CommunicationService>();
             builder.Services.AddScoped<ILdrService,LdrService>();
             builder.Services.AddScoped<IManualModeService, ManualModeService>();
-            builder.Services.AddScoped<ICommunicationService, CommunicationService>();
+           
 
 
             builder.Services.AddDbContext<LdrDBContext>();

@@ -6,9 +6,11 @@ namespace LDRSensorA5.Services
     public class LdrService : ILdrService
     {
         LdrDBContext _dbContext;
+        ICommunicationService _communicationService;
 
-        public LdrService(LdrDBContext dbContext)
+        public LdrService(ICommunicationService communication, LdrDBContext dbContext)
         {
+            _communicationService = communication;
             _dbContext = dbContext;
         }
 
@@ -17,13 +19,10 @@ namespace LDRSensorA5.Services
             LDRData data = new LDRData();
             try
             {
-                //get data from the port  
-                SerialPort port = new SerialPort("COM2", 9600, Parity.None, 8, StopBits.One);
-                port.Open();
-                port.WriteLine("lux-getLux\r");
-                var command = port.ReadLine();
-                port.Close();
-
+                //get data from the port   
+                _communicationService.serialPort.WriteLine("lux-getLux\r");
+                var command = _communicationService.serialPort.ReadLine();
+                
                 //Random random = new Random();
                 //var x = random.Next(1, 20);
                 data.Lux = Int32.Parse(command);
@@ -39,8 +38,7 @@ namespace LDRSensorA5.Services
             {
                 throw;
             }
-            return data;
-            
+            return data;          
         }
 
         public ResponseModel ResetThresholdValues(string command)
@@ -72,12 +70,9 @@ namespace LDRSensorA5.Services
             {
                 //send data to the MCU
                 //update data
-
-                SerialPort port = new SerialPort("COM2", 9600, Parity.None, 8, StopBits.One);
-                port.Open();
-                port.WriteLine("lux-luxSave- + " + threshold.LowerThreshold + "-" + threshold.UpperThreshold + "\r");
-                port.Close();
-
+                //SerialPort port = new SerialPort("COM2", 9600, Parity.None, 8, StopBits.One);
+                //port.Open();
+                _communicationService.serialPort?.WriteLine("lux-luxSave-" + threshold.LowerThreshold + "-" + threshold.UpperThreshold + "\r");
                 model.IsSucess = true;
                 model.Message = "Threshold values updated";
             }

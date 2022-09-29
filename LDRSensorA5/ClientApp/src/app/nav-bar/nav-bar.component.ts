@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommunicationService } from '../communication.service';
+import { ConnectionParameters } from '../models/ConnectionParameters';
 
 @Component({
   selector: 'app-nav-bar',
@@ -16,11 +17,13 @@ export class NavBarComponent implements OnInit {
 
   onConnectButtonClick()
   {
-    this.communicationService.connect().subscribe()
+    var parameters = new ConnectionParameters(1,1,1,1,1)
+    this.communicationService.connect(parameters).subscribe()
   }
   onDisconnectButtonClick()
   {
-    this.communicationService.disconnect().subscribe()
+    var parameters = new ConnectionParameters(1,1,1,1,1)
+    this.communicationService.disconnect(parameters).subscribe()
   }
   onManualButtonClick()
   {

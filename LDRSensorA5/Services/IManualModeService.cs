@@ -4,7 +4,6 @@ namespace LDRSensorA5.Services
 {
     public interface IManualModeService
     {
-        ResponseModel SetRelayState(bool relayState);
-        ResponseModel SetCurrentValue(float current);
+        ResponseModel SendCurrentAndRelayData(ManualModeData manualModeData);
     }
 }
