@@ -41,7 +41,7 @@ namespace LDRSensorA5.Services
             return data;          
         }
 
-        public ResponseModel ResetThresholdValues(string command)
+        public ResponseModel ResetThresholdValues(LightThreshold threshold)
         {
             ResponseModel model = new ResponseModel();
             try
@@ -82,6 +82,41 @@ namespace LDRSensorA5.Services
                 model.Message = "Error: " + ex.Message;
             }
             return model;
+        }
+
+        public ResponseModel SaveThresholdValues(LightThreshold threshold)
+        {
+            ResponseModel model = new ResponseModel();
+            try
+            {
+                _communicationService.serialPort.WriteLine("lux-luxSave-" + threshold.LowerThreshold + "-" + threshold.UpperThreshold + "\r");
+                model.IsSucess = true;
+                model.Message = "Threshold values updated";
+            }
+            catch(Exception ex)
+            {
+                model.IsSucess = false;
+                model.Message = "Error: " + ex.Message;
+            }
+            return model;
+        }
+
+        public LightThreshold GetThresholdValues()
+        {
+            LightThreshold threshold = new LightThreshold();
+            try
+            {
+                _communicationService.serialPort.WriteLine("lux-luxRetrieve\r");
+                var command = _communicationService.serialPort.ReadLine();
+                var values = command.Split("-");
+                threshold.LowerThreshold = Convert.ToDouble(values[0]);
+                threshold.UpperThreshold = Convert.ToDouble(values[1]);
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+            return threshold;
         }
     }
 }

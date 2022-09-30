@@ -6,8 +6,8 @@ namespace LDRSensorA5.Models
     {
         [Key]
         public DateTime TimeStamp { get; set; }
-        public float Lux { get; set; }  
-        public float Current { get; set; }
+        public double Lux { get; set; }  
+        public double Current { get; set; }
         
     }
 }

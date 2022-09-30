@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommunicationService } from '../communication.service';
+import { LDRService } from '../ldr.service';
 import { ConnectionParameters } from '../models/ConnectionParameters';
 
 @Component({
@@ -10,7 +11,7 @@ import { ConnectionParameters } from '../models/ConnectionParameters';
 })
 export class NavBarComponent implements OnInit {
 
-  constructor(private communicationService: CommunicationService, private router:Router) { }
+  constructor(private communicationService: CommunicationService, private ldrService:LDRService, private router:Router) { }
 
   ngOnInit(): void {
   }

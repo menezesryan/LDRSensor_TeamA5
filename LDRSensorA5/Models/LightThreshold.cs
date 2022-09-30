@@ -2,7 +2,7 @@
 {
     public class LightThreshold
     {
-        public float LowerThreshold { get; set; }
-        public float UpperThreshold { get; set; }
+        public double LowerThreshold { get; set; }
+        public double UpperThreshold { get; set; }
     }
 }

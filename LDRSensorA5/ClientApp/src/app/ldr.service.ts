@@ -39,11 +39,9 @@ export class LDRService {
      )
   }
 
- 
-
-  resetThresholdValues()
+  resetThresholdValues(threshold:LightThreshold)
   {
-    return this.httpClient.post(this.baseUrl+'/ResetThreshold',JSON.stringify("reset"), this.httpHeader)
+    return this.httpClient.post(this.baseUrl+'/ResetThreshold',JSON.stringify(threshold), this.httpHeader)
     .pipe(
       retry(1),
       catchError(this.httpError)
@@ -53,6 +51,24 @@ export class LDRService {
   getLDRData() : Observable<LDRData>
   {
     return this.httpClient.get<LDRData>(this.baseUrl + '/GetLDRData', this.httpHeader)
+    .pipe(
+      retry(1),
+      catchError(this.httpError)
+    )
+  }
+
+  getThresholdData():Observable<LightThreshold>
+  {
+    return this.httpClient.get<LightThreshold>(this.baseUrl+'/GetThreshold',this.httpHeader)
+    .pipe(
+      retry(1),
+      catchError(this.httpError)
+    )
+  }
+
+  saveThresholdData(threshold:LightThreshold)
+  {
+    return this.httpClient.post(this.baseUrl+'/SaveThreshold',JSON.stringify(threshold),this.httpHeader)
     .pipe(
       retry(1),
       catchError(this.httpError)

@@ -38,9 +38,6 @@ export class ManualModeComponent implements OnInit {
     var manualModeData = new ManualModeData(value.currentValue,this.state)
     
     this.manualModeService.sendCurrentAndRelayData(manualModeData).subscribe()
-
-    // this.manualModeService.setCurrentValue(value.currentValue).subscribe()
-    // this.manualModeService.setRelayState(this.state).subscribe()
     
   }
 

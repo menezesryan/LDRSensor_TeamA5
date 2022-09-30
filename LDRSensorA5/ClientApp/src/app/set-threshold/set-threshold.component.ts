@@ -12,6 +12,7 @@ import { LightThreshold } from '../models/LightThreshold';
 export class SetThresholdComponent implements OnInit, OnDestroy{
   ThresholdForm : FormGroup
   lightThreshold : LightThreshold
+  saveLightThreshold:LightThreshold
   setThresholdSubscription : Subscription
   resetThresholdSubscription : Subscription
   constructor(fb:FormBuilder, private ldrService : LDRService) {
@@ -20,6 +21,8 @@ export class SetThresholdComponent implements OnInit, OnDestroy{
       'upperThreshold' :['',Validators.required]
     })
 
+
+    this.saveLightThreshold = new LightThreshold(0,0)
     this.lightThreshold = new LightThreshold(0,0)
     this.setThresholdSubscription = Subscription.EMPTY
     this.resetThresholdSubscription = Subscription.EMPTY
@@ -51,7 +54,11 @@ export class SetThresholdComponent implements OnInit, OnDestroy{
     //get the default threshold values
     //make a new threshold object and store these values
     this.lightThreshold = new LightThreshold(0,0)
-    this.ldrService.resetThresholdValues().subscribe()
+    this.ldrService.resetThresholdValues(this.lightThreshold).subscribe()
   }
 
+  onSaveThresholdSubmit()
+  {
+    this.ldrService.saveThresholdData(this.lightThreshold).subscribe()
+  }
 }

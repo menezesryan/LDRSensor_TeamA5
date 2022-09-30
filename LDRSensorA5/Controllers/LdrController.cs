@@ -35,14 +35,33 @@ namespace LDRSensorA5.Controllers
                 return BadRequest();
             }
         }
-
-        [HttpPost]
+        [HttpGet]
         [Route("[action]")]
-        public IActionResult ResetThreshold(String command)
+        public IActionResult GetThreshold()
         {
             try
             {
-                var model = _ldrService.ResetThresholdValues(command);
+                LightThreshold threshold = _ldrService.GetThresholdValues();
+                if (threshold == null)
+                {
+                    return NotFound();
+                }
+                return Ok(threshold);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult ResetThreshold(LightThreshold threshold)
+        {
+            try
+            {
+                var model = _ldrService.ResetThresholdValues(threshold);
                 return Ok(model);
             }
             catch(Exception)
@@ -62,6 +81,22 @@ namespace LDRSensorA5.Controllers
 
             }
             catch(Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult SaveThreshold(LightThreshold threshold)
+        {
+            try
+            {
+                var model = _ldrService.SaveThresholdValues(threshold);
+                return Ok(model);
+
+            }
+            catch (Exception)
             {
                 return BadRequest();
             }

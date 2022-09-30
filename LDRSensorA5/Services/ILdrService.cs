@@ -5,8 +5,9 @@ namespace LDRSensorA5.Services
     public interface ILdrService
     {
         ResponseModel SetThresholdValues(LightThreshold threshold);
-        ResponseModel ResetThresholdValues(string command);
+        ResponseModel ResetThresholdValues(LightThreshold threshold);
         LDRData GetLDRData();
-
+        ResponseModel SaveThresholdValues(LightThreshold threshold);
+        LightThreshold GetThresholdValues();
     }
 }
