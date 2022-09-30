@@ -33,10 +33,24 @@ namespace LDRSensorA5.Services
                 data.TimeStamp = DateTime.Now;
 
                 //transform light to current
+
                 //send current data back
 
-                //save data to database
+                ConfigurationData configuration = new ConfigurationData();
+                string fileName = "configuration.json";
+                string jsonString = File.ReadAllText(fileName);
+                configuration = JsonSerializer.Deserialize<ConfigurationData>(jsonString);
 
+                if (data.Lux > configuration.LowerThreshold && data.Lux<configuration.UpperThreshold)
+                {
+                    _communicationService.serialPort.WriteLine("lux-luxCurrent-" + data.Current+"\r");
+                }
+                else
+                {
+                    _communicationService.serialPort.WriteLine("lux-luxCurrent-4\r");
+                }
+
+                //save data to database
                 _dbContext.Add<LDRData>(data);
                 _dbContext.SaveChanges();
             }
@@ -67,8 +81,8 @@ namespace LDRSensorA5.Services
                 var options = new JsonSerializerOptions { WriteIndented = true };
                 jsonString = JsonSerializer.Serialize(configuration, options);
                 File.WriteAllText(fileName, jsonString);
-
-                _communicationService.serialPort.WriteLine("lux-luxSave-" + configuration.LowerThreshold + "-" + configuration.UpperThreshold + "\r");
+                _communicationService.serialPort.WriteLine("lux-luxConfig-"+ configuration.LowerThreshold + "-" + configuration.UpperThreshold + "\r");
+                _communicationService.serialPort.WriteLine("lux-luxSave");
 
                 model.IsSucess = true;
                 model.Message = "Threshold Value reset successful";
@@ -108,6 +122,7 @@ namespace LDRSensorA5.Services
                 jsonString = JsonSerializer.Serialize(configuration, options);
                 File.WriteAllText(fileName, jsonString);
 
+                _communicationService.serialPort.WriteLine("lux-luxConfig-" + configuration.LowerThreshold + "-" + configuration.UpperThreshold + "\r");
 
                 model.IsSucess = true;
                 model.Message = "Threshold values updated";
@@ -126,7 +141,7 @@ namespace LDRSensorA5.Services
             ResponseModel model = new ResponseModel();
             try
             {
-                _communicationService.serialPort.WriteLine("lux-luxSave-" + threshold.LowerThreshold + "-" + threshold.UpperThreshold + "\r");
+                _communicationService.serialPort.WriteLine("lux-luxSave\r");
 
                 string fileName = "configuration.json";
 

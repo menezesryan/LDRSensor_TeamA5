@@ -17,7 +17,7 @@ namespace LDRSensorA5.Services
             try
             {
                 Console.WriteLine(manualModeData.ToString());
-                _communicationService.serialPort.WriteLine("lux-manualModeData-" + manualModeData.Current+ "-" + manualModeData.RelayState);
+                _communicationService.serialPort.WriteLine("lux-manualMode-" + manualModeData.Current+ "-" + manualModeData.RelayState);
                 model.IsSucess = true;
                 model.Message = "Current and relay data sent successfully";
             }
