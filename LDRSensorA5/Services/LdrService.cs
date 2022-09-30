@@ -1,5 +1,8 @@
 ﻿using LDRSensorA5.Models;
+using Microsoft.Extensions.Configuration;
 using System.IO.Ports;
+using System.Text.Json;
+using System.Xml;
 
 namespace LDRSensorA5.Services
 {
@@ -29,6 +32,9 @@ namespace LDRSensorA5.Services
                 data.Current = (float)(Int32.Parse(command) * 1.75);
                 data.TimeStamp = DateTime.Now;
 
+                //transform light to current
+                //send current data back
+
                 //save data to database
 
                 _dbContext.Add<LDRData>(data);
@@ -48,6 +54,21 @@ namespace LDRSensorA5.Services
             {
                 //get default data from JSON file or MCU
                 //set the threshold value here
+
+                ConfigurationData configuration = new ConfigurationData();
+                string fileName = "configuration.json";
+                string jsonString = File.ReadAllText(fileName);
+
+                configuration = JsonSerializer.Deserialize<ConfigurationData>(jsonString);
+
+                configuration.UpperThreshold = configuration.DefaultUpperThreshold;
+                configuration.LowerThreshold = configuration.DefaultLowerThreshold;
+
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                jsonString = JsonSerializer.Serialize(configuration, options);
+                File.WriteAllText(fileName, jsonString);
+
+                _communicationService.serialPort.WriteLine("lux-luxSave-" + configuration.LowerThreshold + "-" + configuration.UpperThreshold + "\r");
 
                 model.IsSucess = true;
                 model.Message = "Threshold Value reset successful";
@@ -72,10 +93,26 @@ namespace LDRSensorA5.Services
                 //update data
                 //SerialPort port = new SerialPort("COM2", 9600, Parity.None, 8, StopBits.One);
                 //port.Open();
-                _communicationService.serialPort?.WriteLine("lux-luxSave-" + threshold.LowerThreshold + "-" + threshold.UpperThreshold + "\r");
+
+                //set the threshold for the graph conversion
+                ConfigurationData configuration = new ConfigurationData();
+                string fileName = "configuration.json";
+                string jsonString = File.ReadAllText(fileName);
+
+                configuration = JsonSerializer.Deserialize<ConfigurationData>(jsonString);
+
+                configuration.UpperThreshold = threshold.UpperThreshold;
+                configuration.LowerThreshold = threshold.LowerThreshold;
+
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                jsonString = JsonSerializer.Serialize(configuration, options);
+                File.WriteAllText(fileName, jsonString);
+
+
                 model.IsSucess = true;
                 model.Message = "Threshold values updated";
             }
+
             catch(Exception ex)
             {
                 model.IsSucess = false;
@@ -90,6 +127,21 @@ namespace LDRSensorA5.Services
             try
             {
                 _communicationService.serialPort.WriteLine("lux-luxSave-" + threshold.LowerThreshold + "-" + threshold.UpperThreshold + "\r");
+
+                string fileName = "configuration.json";
+
+                ConfigurationData configuration = new ConfigurationData();
+                string jsonString = File.ReadAllText(fileName);
+
+                configuration = JsonSerializer.Deserialize<ConfigurationData>(jsonString);
+        
+                configuration.UpperThreshold = threshold.UpperThreshold;
+                configuration.LowerThreshold = threshold.LowerThreshold;
+
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                jsonString = JsonSerializer.Serialize(configuration, options);
+                File.WriteAllText(fileName, jsonString);
+
                 model.IsSucess = true;
                 model.Message = "Threshold values updated";
             }
@@ -111,8 +163,40 @@ namespace LDRSensorA5.Services
                 var values = command.Split("-");
                 threshold.LowerThreshold = Convert.ToDouble(values[0]);
                 threshold.UpperThreshold = Convert.ToDouble(values[1]);
+
+                //string fileName = "configuration.json";
+
+                //ConfigurationData configuration = new ConfigurationData();
+                //configuration.DefaultLowerThreshold = threshold.LowerThreshold;
+                //configuration.DefaultUpperThreshold = threshold.UpperThreshold;
+                //configuration.UpperThreshold = threshold.UpperThreshold;
+                //configuration.LowerThreshold = threshold.LowerThreshold;
+
+                //var options = new JsonSerializerOptions { WriteIndented = true };
+                //string jsonString = JsonSerializer.Serialize(configuration,options);
+                //File.WriteAllText(fileName, jsonString);
+
             }
             catch(Exception)
+            {
+                throw;
+            }
+            return threshold;
+        }
+
+        public LightThreshold GetDefaultThresholdValues()
+        {
+            LightThreshold threshold = new LightThreshold();
+            try
+            {
+                //get default threshold values from json data
+                string fileName = "configuration.json";
+                string jsonString = File.ReadAllText(fileName);
+                ConfigurationData configuration = JsonSerializer.Deserialize<ConfigurationData>(jsonString);
+                threshold.UpperThreshold = configuration.DefaultUpperThreshold;
+                threshold.LowerThreshold = configuration.DefaultLowerThreshold;
+            }
+            catch (Exception)
             {
                 throw;
             }

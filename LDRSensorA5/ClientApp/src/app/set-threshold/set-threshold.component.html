@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <form [formGroup] = "ThresholdForm" (ngSubmit)="onThresholdSumbit(ThresholdForm.value)" class="ui form">
                 <div class="form-group">
                   <label for="lowerThreshold">Lower Threshold</label>
@@ -12,16 +12,25 @@
                   <input type="number" formControlName="upperThreshold" class="form-control" id="upperThreshold"  aria-describedby="upperHelp" placeholder="Enter Upper Threshold">
                   <small id="upperHelp" class="form-text text-muted">Upper threshold should not be greater than x lux</small>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                
               </form>
+
+              <div class="row justify-content-center mt-3">
+                <div class="col-md-4">
+                  <button type="submit" class="btn btn-primary" (click)="onThresholdSumbit(ThresholdForm.value)">Submit</button>
+                </div>
+                <div class="col-md-4">
+                  <button type="submit" class="btn btn-primary" (click)="onSaveThresholdSubmit()">Save</button>
+              </div>
+                  <div class="col-md-4">
+                      <button type="submit" class="btn btn-primary" (click)="onResetThresholdSubmit()">Reset</button>
+                  </div>
+              </div>
         </div>
+        <div class="col-md-6 text-center">
+          <p>Lower Threshold: {{lightThreshold.lowerThreshold}}</p>
+          <p>Upper Threshold: {{lightThreshold.upperThreshold}}</p>
+      </div>
     </div>
-    <div class="row justify-content-center mt-3">
-      <div class="col-md-4">
-        <button type="submit" class="btn btn-primary" (click)="onSaveThresholdSubmit()">Save Current Threshold Values</button>
-    </div>
-        <div class="col-md-4">
-            <button type="submit" class="btn btn-primary" (click)="onResetThresholdSubmit()">Reset Threshold Values</button>
-        </div>
-    </div>
+   
 </div>

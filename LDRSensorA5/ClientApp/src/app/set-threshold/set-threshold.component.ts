@@ -15,12 +15,12 @@ export class SetThresholdComponent implements OnInit, OnDestroy{
   saveLightThreshold:LightThreshold
   setThresholdSubscription : Subscription
   resetThresholdSubscription : Subscription
+
   constructor(fb:FormBuilder, private ldrService : LDRService) {
     this.ThresholdForm = fb.group({
       'lowerThreshold':['',Validators.required],
       'upperThreshold' :['',Validators.required]
     })
-
 
     this.saveLightThreshold = new LightThreshold(0,0)
     this.lightThreshold = new LightThreshold(0,0)
@@ -36,6 +36,9 @@ export class SetThresholdComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
+    this.ldrService.getThresholdData().subscribe(data=>{
+      this.lightThreshold = data
+    })
   }
 
   onThresholdSumbit(value:any)
@@ -54,7 +57,15 @@ export class SetThresholdComponent implements OnInit, OnDestroy{
     //get the default threshold values
     //make a new threshold object and store these values
     this.lightThreshold = new LightThreshold(0,0)
-    this.ldrService.resetThresholdValues(this.lightThreshold).subscribe()
+    this.ldrService.resetThresholdValues(this.lightThreshold).subscribe(()=>{
+      this.ldrService.getDefaultThresholdData().subscribe(data=>{
+        this.lightThreshold = data
+        console.log(this.lightThreshold)
+      })
+    }
+    )
+    
+
   }
 
   onSaveThresholdSubmit()

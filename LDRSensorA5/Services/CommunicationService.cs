@@ -16,6 +16,8 @@ namespace LDRSensorA5.Services
                 //Ryan you really have to do something..!
                 // :( 
 
+
+
                 if (serialPort == null || !serialPort.IsOpen)
                 {
 

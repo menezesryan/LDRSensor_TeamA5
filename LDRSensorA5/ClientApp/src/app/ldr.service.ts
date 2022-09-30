@@ -66,6 +66,15 @@ export class LDRService {
     )
   }
 
+  getDefaultThresholdData():Observable<LightThreshold>
+  {
+    return this.httpClient.get<LightThreshold>(this.baseUrl+'/GetDefaultThreshold',this.httpHeader)
+    .pipe(
+      retry(1),
+      catchError(this.httpError)
+    )
+  }
+
   saveThresholdData(threshold:LightThreshold)
   {
     return this.httpClient.post(this.baseUrl+'/SaveThreshold',JSON.stringify(threshold),this.httpHeader)

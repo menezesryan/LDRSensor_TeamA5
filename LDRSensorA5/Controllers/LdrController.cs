@@ -53,6 +53,24 @@ namespace LDRSensorA5.Controllers
                 return BadRequest();
             }
         }
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetDefaultThreshold()
+        {
+            try
+            {
+                LightThreshold threshold = _ldrService.GetDefaultThresholdValues();
+                if (threshold == null)
+                {
+                    return NotFound();
+                }
+                return Ok(threshold);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
 
 
         [HttpPost]
