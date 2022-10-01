@@ -73,6 +73,28 @@ namespace LDRSensorA5.Services
             return model;
         }
 
+        public bool IsConnected()
+        {
+            bool isConnected = false;
+            try
+            {
+                if(serialPort==null || !serialPort.IsOpen)
+                {
+                    isConnected = false;
+                }
+                else
+                {
+                    isConnected = true;
+                }
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+
+            return isConnected;
+        }
+
        
     }
 }

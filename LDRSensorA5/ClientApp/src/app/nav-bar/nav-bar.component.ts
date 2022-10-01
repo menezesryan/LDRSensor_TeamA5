@@ -1,3 +1,4 @@
+import { partitionArray } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommunicationService } from '../communication.service';
@@ -10,31 +11,35 @@ import { ConnectionParameters } from '../models/ConnectionParameters';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
-
-  constructor(private communicationService: CommunicationService, private ldrService:LDRService, private router:Router) { }
+  isConnected: boolean
+  constructor(private communicationService: CommunicationService, private ldrService: LDRService, private router: Router) {
+    this.isConnected = false
+  }
 
   ngOnInit(): void {
   }
 
-  onConnectButtonClick()
-  {
-    var parameters = new ConnectionParameters(1,1,1,1,1)
+  onConnectButtonClick() {
+    var parameters = new ConnectionParameters(1, 1, 1, 1, 1)
     this.communicationService.connect(parameters).subscribe()
   }
-  onDisconnectButtonClick()
-  {
-    var parameters = new ConnectionParameters(1,1,1,1,1)
+  onDisconnectButtonClick() {
+    var parameters = new ConnectionParameters(1, 1, 1, 1, 1)
     this.communicationService.disconnect(parameters).subscribe()
   }
-  onManualButtonClick()
-  {
-    
+  onManualButtonClick() {
+
     //navigate to manual component
     this.router.navigate(['/manual-mode'])
   }
-  onAutomaticButtonClick()
-  {
+  onAutomaticButtonClick() {
     //navigate to automatic component
     this.router.navigate(['/automatic-mode'])
+  }
+
+  isConnectedButtonClick() {
+    this.communicationService.isConnected().subscribe((data) => {
+      this.isConnected = data
+    })
   }
 }

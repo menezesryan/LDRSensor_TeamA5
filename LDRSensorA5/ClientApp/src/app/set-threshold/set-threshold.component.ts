@@ -9,40 +9,39 @@ import { LightThreshold } from '../models/LightThreshold';
   templateUrl: './set-threshold.component.html',
   styleUrls: ['./set-threshold.component.css']
 })
-export class SetThresholdComponent implements OnInit, OnDestroy{
-  ThresholdForm : FormGroup
-  lightThreshold : LightThreshold
-  saveLightThreshold:LightThreshold
-  setThresholdSubscription : Subscription
-  resetThresholdSubscription : Subscription
+export class SetThresholdComponent implements OnInit, OnDestroy {
+  ThresholdForm: FormGroup
+  lightThreshold: LightThreshold
+  saveLightThreshold: LightThreshold
+  setThresholdSubscription: Subscription
+  resetThresholdSubscription: Subscription
 
-  constructor(fb:FormBuilder, private ldrService : LDRService) {
+  constructor(fb: FormBuilder, private ldrService: LDRService) {
     this.ThresholdForm = fb.group({
-      'lowerThreshold':['',Validators.required],
-      'upperThreshold' :['',Validators.required]
+      'lowerThreshold': ['', Validators.required],
+      'upperThreshold': ['', Validators.required]
     })
 
-    this.saveLightThreshold = new LightThreshold(0,0)
-    this.lightThreshold = new LightThreshold(0,0)
+    this.saveLightThreshold = new LightThreshold(0, 0)
+    this.lightThreshold = new LightThreshold(0, 0)
     this.setThresholdSubscription = Subscription.EMPTY
     this.resetThresholdSubscription = Subscription.EMPTY
-   }
+  }
   ngOnDestroy(): void {
-    if(this.setThresholdSubscription)
+    if (this.setThresholdSubscription)
       this.setThresholdSubscription.unsubscribe()
-    
-    if(this.resetThresholdSubscription)
+
+    if (this.resetThresholdSubscription)
       this.resetThresholdSubscription.unsubscribe()
   }
 
   ngOnInit(): void {
-    this.ldrService.getThresholdData().subscribe(data=>{
+    this.ldrService.getThresholdData().subscribe(data => {
       this.lightThreshold = data
     })
   }
 
-  onThresholdSumbit(value:any)
-  {
+  onThresholdSumbit(value: any) {
     console.log(value.lowerThreshold)
     console.log(value.upperThreshold)
     this.lightThreshold = new LightThreshold(value.lowerThreshold, value.upperThreshold)
@@ -52,24 +51,24 @@ export class SetThresholdComponent implements OnInit, OnDestroy{
     this.ThresholdForm.reset()
   }
 
-  onResetThresholdSubmit()
-  {
+  onResetThresholdSubmit() {
     //get the default threshold values
     //make a new threshold object and store these values
-    this.lightThreshold = new LightThreshold(0,0)
-    this.ldrService.resetThresholdValues(this.lightThreshold).subscribe(()=>{
-      this.ldrService.getDefaultThresholdData().subscribe(data=>{
+    this.lightThreshold = new LightThreshold(0, 0)
+    this.ldrService.resetThresholdValues(this.lightThreshold).subscribe(() => {
+      this.ldrService.getDefaultThresholdData().subscribe(data => {
         this.lightThreshold = data
         console.log(this.lightThreshold)
       })
     }
     )
-    
+
 
   }
 
-  onSaveThresholdSubmit()
-  {
+  onSaveThresholdSubmit() {
     this.ldrService.saveThresholdData(this.lightThreshold).subscribe()
+    console.log(this.lightThreshold.lowerThreshold)
+    console.log(this.lightThreshold.upperThreshold)
   }
 }

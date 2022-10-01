@@ -141,7 +141,7 @@ namespace LDRSensorA5.Services
             ResponseModel model = new ResponseModel();
             try
             {
-                _communicationService.serialPort.WriteLine("lux-luxSave\r");
+                _communicationService.serialPort.WriteLine("lux-luxSave");
 
                 string fileName = "configuration.json";
 

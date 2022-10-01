@@ -46,5 +46,20 @@ namespace LDRSensorA5.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult IsConnected()
+        {
+            try
+            {
+                bool isConnected = _communicationService.IsConnected();
+                return Ok(isConnected);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
     }
 }
