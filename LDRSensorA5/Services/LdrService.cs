@@ -23,13 +23,22 @@ namespace LDRSensorA5.Services
             try
             {
                 //get data from the port   
+                _communicationService.serialPort.Open();
                 _communicationService.serialPort.WriteLine("lux-getLux\r");
                 var command = _communicationService.serialPort.ReadLine();
-                
+                _communicationService.serialPort.Close();
+                Console.WriteLine(command);
+                //string[] value=command.Split('>');
+                //string[] newvalue = value[1].Split(' ');
                 //Random random = new Random();
                 //var x = random.Next(1, 20);
-                data.Lux = Int32.Parse(command);
-                data.Current = (float)(Int32.Parse(command) * 1.75);
+
+
+                //Console.WriteLine("after trim "+Double.Parse(newvalue[0]).ToString("N2"));
+                //data.Lux = Double.Parse(newvalue[0]);
+                //data.Current = (Double.Parse(newvalue[0]) * 1.75);
+                data.Lux = Double.Parse(command);
+                data.Current = (Double.Parse(command) * 1.75);
                 data.TimeStamp = DateTime.Now;
 
                 //transform light to current
@@ -40,10 +49,10 @@ namespace LDRSensorA5.Services
                 string fileName = "configuration.json";
                 string jsonString = File.ReadAllText(fileName);
                 configuration = JsonSerializer.Deserialize<ConfigurationData>(jsonString);
-
+                _communicationService.serialPort.Open();
                 if (data.Lux > configuration.LowerThreshold && data.Lux<configuration.UpperThreshold)
                 {
-                    _communicationService.serialPort.WriteLine("lux-luxCurrent-" + data.Current+"\r");
+                    _communicationService.serialPort.WriteLine("lux-luxCurrent-" + data.Current.ToString("N2")+"\r");
                 }
                 else
                 {
@@ -53,6 +62,7 @@ namespace LDRSensorA5.Services
                 //save data to database
                 _dbContext.Add<LDRData>(data);
                 _dbContext.SaveChanges();
+                _communicationService.serialPort.Close();
             }
             catch(Exception)
             {
@@ -66,6 +76,8 @@ namespace LDRSensorA5.Services
             ResponseModel model = new ResponseModel();
             try
             {
+                _communicationService.serialPort.Open();
+
                 //get default data from JSON file or MCU
                 //set the threshold value here
 
@@ -82,7 +94,8 @@ namespace LDRSensorA5.Services
                 jsonString = JsonSerializer.Serialize(configuration, options);
                 File.WriteAllText(fileName, jsonString);
                 _communicationService.serialPort.WriteLine("lux-luxConfig-"+ configuration.LowerThreshold + "-" + configuration.UpperThreshold + "\r");
-                _communicationService.serialPort.WriteLine("lux-luxSave");
+                _communicationService.serialPort.WriteLine("lux-luxSave\r");
+                _communicationService.serialPort.Close();
 
                 model.IsSucess = true;
                 model.Message = "Threshold Value reset successful";
@@ -103,6 +116,8 @@ namespace LDRSensorA5.Services
 
             try
             {
+                _communicationService.serialPort.Open();
+
                 //send data to the MCU
                 //update data
                 //SerialPort port = new SerialPort("COM2", 9600, Parity.None, 8, StopBits.One);
@@ -133,6 +148,11 @@ namespace LDRSensorA5.Services
                 model.IsSucess = false;
                 model.Message = "Error: " + ex.Message;
             }
+            finally
+            {
+                _communicationService.serialPort.Close();
+
+            }
             return model;
         }
 
@@ -141,7 +161,8 @@ namespace LDRSensorA5.Services
             ResponseModel model = new ResponseModel();
             try
             {
-                _communicationService.serialPort.WriteLine("lux-luxSave");
+                _communicationService.serialPort.Open();
+                _communicationService.serialPort.WriteLine("lux-luxSave\r");
 
                 string fileName = "configuration.json";
 
@@ -165,36 +186,54 @@ namespace LDRSensorA5.Services
                 model.IsSucess = false;
                 model.Message = "Error: " + ex.Message;
             }
+            finally
+            {
+                _communicationService.serialPort.Close();
+
+            }
             return model;
         }
 
         public LightThreshold GetThresholdValues()
         {
+            //_communicationService.serialPort.Open();
             LightThreshold threshold = new LightThreshold();
             try
             {
+                _communicationService.serialPort.Open();
+
                 _communicationService.serialPort.WriteLine("lux-luxRetrieve\r");
                 var command = _communicationService.serialPort.ReadLine();
+
+                Console.WriteLine(command);
+
                 var values = command.Split("-");
                 threshold.LowerThreshold = Convert.ToDouble(values[0]);
                 threshold.UpperThreshold = Convert.ToDouble(values[1]);
 
-                //string fileName = "configuration.json";
+                string fileName = "configuration.json";
 
-                //ConfigurationData configuration = new ConfigurationData();
-                //configuration.DefaultLowerThreshold = threshold.LowerThreshold;
-                //configuration.DefaultUpperThreshold = threshold.UpperThreshold;
-                //configuration.UpperThreshold = threshold.UpperThreshold;
-                //configuration.LowerThreshold = threshold.LowerThreshold;
+                ConfigurationData configuration = new ConfigurationData();
+                string jsonString = File.ReadAllText(fileName);
 
-                //var options = new JsonSerializerOptions { WriteIndented = true };
-                //string jsonString = JsonSerializer.Serialize(configuration,options);
-                //File.WriteAllText(fileName, jsonString);
+                configuration = JsonSerializer.Deserialize<ConfigurationData>(jsonString);
 
+                configuration.UpperThreshold = threshold.UpperThreshold;
+                configuration.LowerThreshold = threshold.LowerThreshold;
+
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                jsonString = JsonSerializer.Serialize(configuration, options);
+                File.WriteAllText(fileName, jsonString);
+
+                _communicationService.serialPort.WriteLine("lux-luxConfig-" + threshold.LowerThreshold + "-" + threshold.UpperThreshold + "\r");
             }
             catch(Exception)
             {
                 throw;
+            }
+            finally
+            {
+                _communicationService.serialPort.Close();
             }
             return threshold;
         }

@@ -26,6 +26,10 @@ export class SetThresholdComponent implements OnInit, OnDestroy {
     this.lightThreshold = new LightThreshold(0, 0)
     this.setThresholdSubscription = Subscription.EMPTY
     this.resetThresholdSubscription = Subscription.EMPTY
+
+    // this.ldrService.getThresholdData().subscribe(data => {
+    //   this.lightThreshold = data
+    // })
   }
   ngOnDestroy(): void {
     if (this.setThresholdSubscription)
@@ -38,6 +42,8 @@ export class SetThresholdComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.ldrService.getThresholdData().subscribe(data => {
       this.lightThreshold = data
+      
+      console.log("hi" + this.lightThreshold.lowerThreshold + " " + this.lightThreshold.upperThreshold)
     })
   }
 

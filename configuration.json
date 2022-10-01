@@ -1,0 +1,6 @@
+{
+  "DefaultLowerThreshold": 10,
+  "DefaultUpperThreshold": 20,
+  "LowerThreshold": 10,
+  "UpperThreshold": 20
+}

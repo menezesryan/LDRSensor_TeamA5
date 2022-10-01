@@ -23,7 +23,9 @@ namespace LDRSensorA5.Controllers
         {
             try
             {
+                Console.WriteLine("Before getting ldr data");
                 var LdrData = _ldrService.GetLDRData();
+                Console.WriteLine("in controller "+LdrData.Current);
                 if(LdrData == null)
                 {
                     return NotFound();

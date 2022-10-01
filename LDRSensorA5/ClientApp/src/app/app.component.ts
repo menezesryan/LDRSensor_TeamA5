@@ -17,5 +17,6 @@ export class AppComponent implements OnDestroy {
   ngOnDestroy(): void {
     var parameters = new ConnectionParameters(1,1,1,1,1);
      this.communicationService.disconnect(parameters).subscribe();
+     console.log("closed connection")
   }  
 }
