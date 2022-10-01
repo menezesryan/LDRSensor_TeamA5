@@ -11,21 +11,29 @@ import { ConnectionParameters } from '../models/ConnectionParameters';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
-  isConnected: boolean
+  isConnected: boolean = false
   constructor(private communicationService: CommunicationService, private ldrService: LDRService, private router: Router) {
-    this.isConnected = false
+    
   }
 
   ngOnInit(): void {
+    this.communicationService.isConnected().subscribe((data) => {
+      this.isConnected = data
+      console.log(" ngoninit status: " + this.isConnected)
+    })
   }
 
   onConnectButtonClick() {
     var parameters = new ConnectionParameters(1, 1, 1, 1, 1)
     this.communicationService.connect(parameters).subscribe()
+    this.isConnected = true
+    console.log("status: " + this.isConnected)
   }
   onDisconnectButtonClick() {
     var parameters = new ConnectionParameters(1, 1, 1, 1, 1)
     this.communicationService.disconnect(parameters).subscribe()
+    this.isConnected = false;
+    console.log("status: " + this.isConnected)
   }
   onManualButtonClick() {
 
@@ -35,11 +43,5 @@ export class NavBarComponent implements OnInit {
   onAutomaticButtonClick() {
     //navigate to automatic component
     this.router.navigate(['/automatic-mode'])
-  }
-
-  isConnectedButtonClick() {
-    this.communicationService.isConnected().subscribe((data) => {
-      this.isConnected = data
-    })
   }
 }

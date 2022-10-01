@@ -49,7 +49,7 @@ export class CommunicationService {
   }
 
   isConnected(): Observable<boolean> {
-    return this.httpClient.get<boolean>(this.baseUrl + '/IsConnected', this.httpHeader)
+    return this.httpClient.get<boolean>(this.baseUrl + 'IsConnected', this.httpHeader)
       .pipe(
         retry(1),
         catchError(this.httpError)
