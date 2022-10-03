@@ -2,6 +2,9 @@
 
 namespace LDRSensorA5.Services
 {
+    /// <summary>
+    /// <c>Set  </c>
+    /// </summary>
     public interface ILdrService
     {
         ResponseModel SetThresholdValues(LightThreshold threshold);
