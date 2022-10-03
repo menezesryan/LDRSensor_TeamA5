@@ -11,5 +11,6 @@ namespace LDRSensorA5.Services
         ResponseModel Disconnect(ConnectionParameters parameters);
         public bool IsConnected();
         SerialPort serialPort { get; set; }
+        public T FirmwareDataExchange<T>(InteractWithFirmware<T> function);
     }
 }
