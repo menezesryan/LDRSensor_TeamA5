@@ -6,7 +6,7 @@ namespace LDRSensorA5.Services
     public delegate T InteractWithFirmware<T>(SerialPort port);
     public class CommunicationService : ICommunicationService
     {
-        public SerialPort serialPort { get; set; }
+        private SerialPort serialPort { get; set; }
         
 
         public ResponseModel Connect(ConnectionParameters parameters)

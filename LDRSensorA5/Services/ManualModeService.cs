@@ -16,12 +16,19 @@ namespace LDRSensorA5.Services
 
             try
             {
-                _communicationService.serialPort.Open();
 
                 Console.WriteLine(manualModeData.ToString());
                 string relaystate = (manualModeData.RelayState ? "on" : "off");
-                Console.WriteLine("lux-luxManual-" + relaystate + "-" + manualModeData.Current+"\r");
-                _communicationService.serialPort.WriteLine("lux-luxManual-" + relaystate + "-" + manualModeData.Current+"\r");
+                Console.WriteLine("lux-luxManual-" + relaystate + "-" + manualModeData.Current + "\r");
+
+                _communicationService.FirmwareDataExchange((port) =>
+                {
+                    port.WriteLine("lux-luxManual-" + relaystate + "-" + manualModeData.Current + "\r");
+                    return 1;
+                });
+
+
+       
                 model.IsSucess = true;
                 model.Message = "Current and relay data sent successfully";
             }
@@ -32,50 +39,10 @@ namespace LDRSensorA5.Services
             }
             finally
             {
-                _communicationService.serialPort.Close();
+
 
             }
             return model;
         }
-
-        //public ResponseModel SetCurrentValue(float current)
-        //{
-        //    ResponseModel model = new ResponseModel();
-        //    try
-        //    {
-        //        //do something
-        //        Console.WriteLine("Current: " + current);
-        //        _communicationService.serialPort.WriteLine("lux-setCurrent-"+current);
-        //        model.IsSucess = true;
-        //        model.Message = "Current set successful";
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        model.IsSucess = false;
-        //        model.Message = "Error: " + ex.Message;
-        //    }
-        //    return model;
-        //}
-
-        //public ResponseModel SetRelayState(bool relayState)
-        //{
-        //    ResponseModel model = new ResponseModel();
-        //    try
-        //    {
-        //        //do something
-        //        Console.WriteLine("relay: " + relayState);
-        //        _communicationService.serialPort.WriteLine("lux-setRelayState-" + relayState);
-        //        model.IsSucess = true;
-        //        model.Message = "Relay state changed sucessfully";
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        model.IsSucess = false;
-        //        model.Message = "Error: " + ex.Message;
-        //    }
-        //    return model;
-        //}
     }
 }
