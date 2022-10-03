@@ -8,7 +8,6 @@ namespace LDRSensorA5.Services
     {
         private SerialPort serialPort { get; set; }
         
-
         public ResponseModel Connect(ConnectionParameters parameters)
         {
             ResponseModel model = new ResponseModel();
