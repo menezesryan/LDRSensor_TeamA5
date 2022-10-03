@@ -22,12 +22,15 @@ namespace LDRSensorA5.Services
             LDRData data = new LDRData();
             try
             {
-                //get data from the port   
-                _communicationService.serialPort.Open();
-                _communicationService.serialPort.WriteLine("lux-getLux\r");
-                var command = _communicationService.serialPort.ReadLine();
-                _communicationService.serialPort.Close();
-                Console.WriteLine(command);
+                //--------------------
+                var ldrData = _communicationService.FirmwareDataExchange((port) =>
+                {
+                    port.WriteLine("lux-getLux\r");
+                    var command = port.ReadLine();
+                    Console.WriteLine(command);
+                    return command;
+                });
+
                 //string[] value=command.Split('>');
                 //string[] newvalue = value[1].Split(' ');
                 //Random random = new Random();
@@ -37,11 +40,13 @@ namespace LDRSensorA5.Services
                 //Console.WriteLine("after trim "+Double.Parse(newvalue[0]).ToString("N2"));
                 //data.Lux = Double.Parse(newvalue[0]);
                 //data.Current = (Double.Parse(newvalue[0]) * 1.75);
-                data.Lux = Double.Parse(command);
-                data.Current = (Double.Parse(command) * 1.75);
+
+
+                data.Lux = Double.Parse(ldrData);
                 data.TimeStamp = DateTime.Now;
 
                 //transform light to current
+                data.Current = (Double.Parse(ldrData) * 1.75);
 
                 //send current data back
 
@@ -49,20 +54,23 @@ namespace LDRSensorA5.Services
                 string fileName = "configuration.json";
                 string jsonString = File.ReadAllText(fileName);
                 configuration = JsonSerializer.Deserialize<ConfigurationData>(jsonString);
-                _communicationService.serialPort.Open();
-                if (data.Lux > configuration.LowerThreshold && data.Lux<configuration.UpperThreshold)
+
+                _communicationService.FirmwareDataExchange((port) =>
                 {
-                    _communicationService.serialPort.WriteLine("lux-luxCurrent-" + data.Current.ToString("N2")+"\r");
-                }
-                else
-                {
-                    _communicationService.serialPort.WriteLine("lux-luxCurrent-4\r");
-                }
+                    if (data.Lux > configuration.LowerThreshold && data.Lux < configuration.UpperThreshold)
+                    {
+                        port.WriteLine("lux-luxCurrent-" + data.Current.ToString("N2") + "\r");
+                    }
+                    else
+                    {
+                        port.WriteLine("lux-luxCurrent-4\r");
+                    }
+                    return 1;
+                });
 
                 //save data to database
                 _dbContext.Add<LDRData>(data);
-                _dbContext.SaveChanges();
-                _communicationService.serialPort.Close();
+                _dbContext.SaveChanges();  
             }
             catch(Exception)
             {
@@ -76,8 +84,6 @@ namespace LDRSensorA5.Services
             ResponseModel model = new ResponseModel();
             try
             {
-                _communicationService.serialPort.Open();
-
                 //get default data from JSON file or MCU
                 //set the threshold value here
 
@@ -93,9 +99,15 @@ namespace LDRSensorA5.Services
                 var options = new JsonSerializerOptions { WriteIndented = true };
                 jsonString = JsonSerializer.Serialize(configuration, options);
                 File.WriteAllText(fileName, jsonString);
-                _communicationService.serialPort.WriteLine("lux-luxConfig-"+ configuration.LowerThreshold + "-" + configuration.UpperThreshold + "\r");
-                _communicationService.serialPort.WriteLine("lux-luxSave\r");
-                _communicationService.serialPort.Close();
+
+                _communicationService.FirmwareDataExchange((port) =>
+                {
+                    port.WriteLine("lux-luxConfig-" + configuration.LowerThreshold + "-" + configuration.UpperThreshold + "\r");
+                    port.WriteLine("lux-luxSave\r");
+                    return 1;
+                });
+
+               
 
                 model.IsSucess = true;
                 model.Message = "Threshold Value reset successful";
@@ -116,14 +128,14 @@ namespace LDRSensorA5.Services
 
             try
             {
-                _communicationService.serialPort.Open();
 
                 //send data to the MCU
                 //update data
-                //SerialPort port = new SerialPort("COM2", 9600, Parity.None, 8, StopBits.One);
-                //port.Open();
 
                 //set the threshold for the graph conversion
+
+                
+
                 ConfigurationData configuration = new ConfigurationData();
                 string fileName = "configuration.json";
                 string jsonString = File.ReadAllText(fileName);
@@ -137,7 +149,12 @@ namespace LDRSensorA5.Services
                 jsonString = JsonSerializer.Serialize(configuration, options);
                 File.WriteAllText(fileName, jsonString);
 
-                _communicationService.serialPort.WriteLine("lux-luxConfig-" + configuration.LowerThreshold + "-" + configuration.UpperThreshold + "\r");
+                _communicationService.FirmwareDataExchange((port) =>
+                {
+                    port.WriteLine("lux-luxConfig-" + configuration.LowerThreshold + "-" + configuration.UpperThreshold + "\r");
+                    return 1;
+                });
+
 
                 model.IsSucess = true;
                 model.Message = "Threshold values updated";
@@ -150,7 +167,7 @@ namespace LDRSensorA5.Services
             }
             finally
             {
-                _communicationService.serialPort.Close();
+
 
             }
             return model;
@@ -161,8 +178,11 @@ namespace LDRSensorA5.Services
             ResponseModel model = new ResponseModel();
             try
             {
-                _communicationService.serialPort.Open();
-                _communicationService.serialPort.WriteLine("lux-luxSave\r");
+                _communicationService.FirmwareDataExchange((port) =>
+                {
+                    port.WriteLine("lux-luxSave\r");
+                    return 1;
+                });
 
                 string fileName = "configuration.json";
 
@@ -188,7 +208,7 @@ namespace LDRSensorA5.Services
             }
             finally
             {
-                _communicationService.serialPort.Close();
+                
 
             }
             return model;
@@ -196,18 +216,20 @@ namespace LDRSensorA5.Services
 
         public LightThreshold GetThresholdValues()
         {
-            //_communicationService.serialPort.Open();
             LightThreshold threshold = new LightThreshold();
             try
             {
-                _communicationService.serialPort.Open();
+                var thresholdData = _communicationService.FirmwareDataExchange((port) =>
+                {
 
-                _communicationService.serialPort.WriteLine("lux-luxRetrieve\r");
-                var command = _communicationService.serialPort.ReadLine();
+                    port.WriteLine("lux-luxRetrieve\r");
+                    var command = port.ReadLine();
+                    return command;
+                });
 
-                Console.WriteLine(command);
+                Console.WriteLine(thresholdData);
 
-                var values = command.Split("-");
+                var values = thresholdData.Split("-");
                 threshold.LowerThreshold = Convert.ToDouble(values[0]);
                 threshold.UpperThreshold = Convert.ToDouble(values[1]);
 
@@ -225,7 +247,17 @@ namespace LDRSensorA5.Services
                 jsonString = JsonSerializer.Serialize(configuration, options);
                 File.WriteAllText(fileName, jsonString);
 
-                _communicationService.serialPort.WriteLine("lux-luxConfig-" + threshold.LowerThreshold + "-" + threshold.UpperThreshold + "\r");
+                _communicationService.FirmwareDataExchange((port) =>
+                {
+                    port.WriteLine("lux-luxConfig-" + threshold.LowerThreshold + "-" + threshold.UpperThreshold + "\r");
+                    return 1;
+
+                });
+
+                    
+                
+
+               
             }
             catch(Exception)
             {
@@ -233,7 +265,7 @@ namespace LDRSensorA5.Services
             }
             finally
             {
-                _communicationService.serialPort.Close();
+
             }
             return threshold;
         }
