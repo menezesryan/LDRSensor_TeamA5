@@ -15,10 +15,11 @@ namespace LDRSensorA5.Services
         /// <summary>
         /// This function is used to create a port object. The port will be opened for use by services.
         /// </summary>
-        /// <param name="parameters"><c>parameters</c> is of type <c>ConnectionParamters</c> <see cref="ConnectionParameters"/></param>
+        /// <param name="parameters"><c>parameters</c> is of type <see cref="ConnectionParameters"/></param>
         /// <returns>Object of type <c>ResponseModel</c> It will indicate whether http request is successful or
         /// unsuccessful in boolean form and also contain the success or failure message <see cref="ResponseModel"/></returns>
         ResponseModel Connect(ConnectionParameters parameters);
+
 
         /// <summary>
         /// This function is used to disconnect from the port. The port object reference will be set to Null
@@ -28,11 +29,15 @@ namespace LDRSensorA5.Services
         /// unsuccessful in boolean form and also contain the success or failure message <see cref="ResponseModel"/></returns>
         ResponseModel Disconnect(ConnectionParameters parameters);
 
+
         /// <summary>
         /// This function is used to check whether the connection is established and the port is opened or not
         /// </summary>
         /// <returns>Boolean value. true if port is open and false if port is closed</returns>
         public bool IsConnected();
+
+
+
         /// <summary>
         /// <c>FirmwareDataExchange</c> function ensures that only one method is acessing a port at a time. It uses
         /// the Monitor class to make sure the port object is not being accessed by more than one method at a time.

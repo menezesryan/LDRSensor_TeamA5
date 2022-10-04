@@ -13,7 +13,7 @@ namespace LDRSensorA5.Services
         /// It sends the current and relay value to the hardware device via serial communication.
         /// </summary>
         /// <param name="manualModeData"> Parameter is of type <c>ManualModeData</c>. <see cref="ManualModeData"/> </param>
-        /// <returns>Object of type ResponseModel. It will indicate whether http request is successful or
+        /// <returns>Object of type <c>ResponseModel</c>. It will indicate whether http request is successful or
         /// unsuccessful in boolean form and also contain the success or failure message</returns>
         ResponseModel SendCurrentAndRelayData(ManualModeData manualModeData);
     }
