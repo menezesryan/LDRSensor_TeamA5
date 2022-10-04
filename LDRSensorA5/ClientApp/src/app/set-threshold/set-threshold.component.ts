@@ -117,7 +117,7 @@ export class SetThresholdComponent implements OnInit, OnDestroy {
       })
     }
     )
-
+    document.getElementById('resetModalButton')?.click()
 
   }
 
@@ -125,6 +125,7 @@ export class SetThresholdComponent implements OnInit, OnDestroy {
     this.ldrService.saveThresholdData(this.lightThreshold).subscribe()
     console.log(this.lightThreshold.lowerThreshold)
     console.log(this.lightThreshold.upperThreshold)
+    document.getElementById('saveModalButton')?.click()
   }
   get f() { return this.ThresholdForm.controls }
 }

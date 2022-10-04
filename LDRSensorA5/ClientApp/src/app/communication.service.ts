@@ -8,7 +8,7 @@ import { ConnectionParameters } from './models/ConnectionParameters';
   providedIn: 'root'
 })
 export class CommunicationService {
-
+  connectStatus = false
   baseUrl: string
   httpHeader = {
     headers: new HttpHeaders({
@@ -33,6 +33,7 @@ export class CommunicationService {
   }
 
   connect(parameters: ConnectionParameters) {
+    this.connectStatus = true
     return this.httpClient.post(this.baseUrl + 'Connect', JSON.stringify(parameters), this.httpHeader)
       .pipe(
         retry(1),
@@ -41,6 +42,7 @@ export class CommunicationService {
   }
 
   disconnect(parameters: ConnectionParameters) {
+    this.connectStatus = false
     return this.httpClient.post(this.baseUrl + 'Disconnect', JSON.stringify(parameters), this.httpHeader)
       .pipe(
         retry(1),
