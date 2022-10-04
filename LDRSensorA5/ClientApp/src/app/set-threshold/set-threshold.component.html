@@ -1,4 +1,60 @@
-<div class="container-fluid">
+<div class="card" style="width: 100%;">
+  <div class="card-body" style="color: black;">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <form [formGroup]="ThresholdForm" (ngSubmit)="onThresholdSumbit(ThresholdForm.value)" class="ui form">
+            <div class="form-group">
+              <label for="lowerThreshold">Lower Threshold</label>
+              <input type="number" formControlName="lowerThreshold" class="form-control" id="lowerThreshold" aria-describedby="lowerHelp" placeholder="Enter Lower Threshold">
+              <small id="lowerHelp" class="form-text text-muted">Lower threshold should not be less than x lux</small>
+              <div *ngIf="submitted && f['lowerThreshold'].errors" class="text-danger">
+                <div *ngIf="f['lowerThreshold'].errors['required']"> Lower Threshold is Required</div>
+                <div *ngIf="!f['lowerThreshold'].errors['required']">
+                  <div *ngIf="f['lowerThreshold'].errors['invalidLowerValue']">Value must be greater than 10 and less than 200 lumen</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="upperThreshold">Upper Threshold</label>
+              <input type="number" formControlName="upperThreshold" class="form-control" id="upperThreshold" aria-describedby="upperHelp" placeholder="Enter Upper Threshold">
+              <small id="upperHelp" class="form-text text-muted">Upper threshold should not be greater than x lux</small>
+              <div *ngIf="submitted && f['upperThreshold'].errors" class="text-danger">
+                <div *ngIf="f['upperThreshold'].errors['required']"> Upper Threshold is Required</div>
+                <div *ngIf="!f['upperThreshold'].errors['required']">
+                  <div *ngIf="f['upperThreshold'].errors['invalidUpperValue']">Value must be greater than 50 and less than 250 lumen</div>
+                  <div *ngIf="f['upperThreshold'].errors['lowerUpperCondition']">Lower Threshold must be less than Upper Threshold</div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div class="row justify-content-center mt-3">
+            <div class="col-md-4">
+              <button type="submit" class="btn btn-primary" (click)="onThresholdSumbit(ThresholdForm.value)">Submit</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 text-center">
+          <p><br /></p>
+          <h5>Lower Threshold: {{lightThreshold.lowerThreshold}} lumen</h5>
+          <h5>Upper Threshold: {{lightThreshold.upperThreshold}} lumen</h5>
+          <p><br /></p>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4 text-center"><button type="submit" class="btn btn-primary" (click)="onSaveThresholdSubmit()">Save</button></div>
+            <div class="col-md-4 text-center"><button type="submit" class="btn btn-primary" (click)="onResetThresholdSubmit()">Reset</button></div>
+            <div class="col-md-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <form [formGroup] = "ThresholdForm" (ngSubmit)="onThresholdSumbit(ThresholdForm.value)" class="ui form">
@@ -12,7 +68,7 @@
                   <input type="number" formControlName="upperThreshold" class="form-control" id="upperThreshold"  aria-describedby="upperHelp" placeholder="Enter Upper Threshold">
                   <small id="upperHelp" class="form-text text-muted">Upper threshold should not be greater than x lux</small>
                 </div>
-                
+
               </form>
 
               <div class="row justify-content-center mt-3">
@@ -32,5 +88,5 @@
           <p>Upper Threshold: {{lightThreshold.upperThreshold}}</p>
       </div>
     </div>
-   
-</div>
+
+</div>-->

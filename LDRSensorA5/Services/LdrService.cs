@@ -46,7 +46,7 @@ namespace LDRSensorA5.Services
                 data.TimeStamp = DateTime.Now;
 
                 //transform light to current
-                data.Current = (Double.Parse(ldrData) * 1.75);
+                //data.Current = (Double.Parse(ldrData) * 1.75);
 
                 //send current data back
 
@@ -59,11 +59,18 @@ namespace LDRSensorA5.Services
                 {
                     if (data.Lux > configuration.LowerThreshold && data.Lux < configuration.UpperThreshold)
                     {
+                        data.Current = ((data.Lux - configuration.LowerThreshold) / (configuration.UpperThreshold - configuration.LowerThreshold) * 16) + 4;
                         port.WriteLine("lux-luxCurrent-" + data.Current.ToString("N2") + "\r");
                     }
-                    else
+                    else if(data.Lux < configuration.LowerThreshold)
                     {
+                        data.Current = 4;
                         port.WriteLine("lux-luxCurrent-4\r");
+                    }
+                    else if(data.Lux > configuration.UpperThreshold)
+                    {
+                        data.Current = 20;
+                        port.WriteLine("lux-luxCurrent-20\r");
                     }
                     return 1;
                 });
