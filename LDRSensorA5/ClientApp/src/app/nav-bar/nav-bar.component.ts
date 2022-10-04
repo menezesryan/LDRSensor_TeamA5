@@ -1,5 +1,6 @@
 import { partitionArray } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommunicationService } from '../communication.service';
 import { LDRService } from '../ldr.service';
@@ -11,9 +12,18 @@ import { ConnectionParameters } from '../models/ConnectionParameters';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
-  isConnected: boolean = false
-  constructor(private communicationService: CommunicationService, private ldrService: LDRService, private router: Router) {
-    
+  myForm: FormGroup
+  isConnected: boolean
+  constructor(private communicationService: CommunicationService, private ldrService: LDRService, private router: Router, fb: FormBuilder) {
+    this.isConnected = this.communicationService.connectStatus
+    this.myForm = fb.group({
+      'port': ['COM3'],
+      'baud': [9600],
+      'dataBit': [1],
+      'startBit': [1],
+      'stopBit': [1],
+      'parityBit': [1],
+    })
   }
 
   ngOnInit(): void {
@@ -26,21 +36,18 @@ export class NavBarComponent implements OnInit {
   onConnectButtonClick() {
     var parameters = new ConnectionParameters(1, 1, 1, 1, 1)
     this.communicationService.connect(parameters).subscribe()
-    this.isConnected = true
+    this.isConnected = this.communicationService.connectStatus
     console.log("status: " + this.isConnected)
+    document.getElementById('connectModalButton')?.click()
     this.router.navigate(['/automatic-mode'])
   }
   onDisconnectButtonClick() {
-    if (confirm('Are you sure you want to disconnect ?')) {
       var parameters = new ConnectionParameters(1, 1, 1, 1, 1)
       this.communicationService.disconnect(parameters).subscribe()
-      this.isConnected = false;
+      this.isConnected = this.communicationService.connectStatus
       console.log("status: " + this.isConnected)
-      this.router.navigate(['/home'])
-    }
-    else {
-      console.log("Nope status: " + this.isConnected)
-    }
+    this.router.navigate(['/home'])
+    document.getElementById('disconnectModalButton')?.click()
     //var parameters = new ConnectionParameters(1, 1, 1, 1, 1)
     //this.communicationService.disconnect(parameters).subscribe()
     //this.isConnected = false;

@@ -1,4 +1,4 @@
-<div class="card" style="width: 100%;">
+<div class="card border-secondary border-2" style="width: 100%;">
   <div class="card-body" style="color: black;">
     <div class="container-fluid">
       <div class="row justify-content-center">
@@ -42,8 +42,18 @@
           <p><br /></p>
           <div class="row">
             <div class="col-md-2"></div>
-            <div class="col-md-4 text-center"><button type="submit" class="btn btn-primary" (click)="onSaveThresholdSubmit()">Save</button></div>
-            <div class="col-md-4 text-center"><button type="submit" class="btn btn-primary" (click)="onResetThresholdSubmit()">Reset</button></div>
+            <div class="col-md-4 text-center">
+              <button type="button" class="btn btn-primary mx-1 my-1" data-bs-toggle="modal" data-bs-target="#saveModal">
+                Save
+              </button>
+              <!--<button type="submit" class="btn btn-primary" (click)="onSaveThresholdSubmit()">Save</button>-->
+            </div>
+            <div class="col-md-4 text-center">
+              <button type="button" class="btn btn-primary mx-1 my-1" data-bs-toggle="modal" data-bs-target="#resetModal">
+                Reset
+              </button>
+              <!--<button type="submit" class="btn btn-primary" (click)="onResetThresholdSubmit()">Reset</button>-->
+            </div>
             <div class="col-md-2"></div>
           </div>
         </div>
@@ -52,7 +62,41 @@
   </div>
 </div>
 
+<div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="saveModalLabel">Save Threshold</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Do you want to save the Threshold Values ? 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" id="saveModalButton" data-bs-dismiss="modal" (click)="onSaveThresholdSubmit()">Save Threshold</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<div class="modal fade" id="resetModal" tabindex="-1" aria-labelledby="resetModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="resetModalLabel">Reset Threshold</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Do you want to reset the Threshold Values ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="resetModalButton" data-bs-dismiss="modal" (click)="onResetThresholdSubmit()">Reset Threshold</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!--<div class="container-fluid">
     <div class="row justify-content-center">
