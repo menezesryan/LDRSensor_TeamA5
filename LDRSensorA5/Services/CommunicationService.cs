@@ -23,9 +23,6 @@ namespace LDRSensorA5.Services
             ResponseModel model = new ResponseModel();
             try
             {
-                //do something
-                //Ryan you really have to do something..!
-                // :( 
 
                 if (serialPort == null || !serialPort.IsOpen)
                 {
@@ -76,9 +73,6 @@ namespace LDRSensorA5.Services
                     model.IsSucess = false;
                     model.Message = "Port already closed";
                 }
-
-                model.IsSucess = true;
-                model.Message = "Port closed successfully";
             }
 
             catch (Exception ex)

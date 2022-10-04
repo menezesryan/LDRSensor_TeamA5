@@ -30,7 +30,6 @@ function LowerUpperCondition(lowerThreshold: string, upperThreshold: string) {
       return
     }
 
-
     if (Number(lower.value) > Number(upper.value)) {
       upper.setErrors({ lowerUpperCondition: true })
 
@@ -42,8 +41,6 @@ function LowerUpperCondition(lowerThreshold: string, upperThreshold: string) {
   }
 
 }
-
-
 
 
 @Component({

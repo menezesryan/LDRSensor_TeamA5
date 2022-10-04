@@ -97,6 +97,20 @@ namespace LDRSensorA5.Services
                 });
 
                 //save data to database
+
+                //var first = _dbContext.LDRData.OrderBy(p => p.TimeStamp).FirstOrDefault();
+
+                TimeSpan interval = new TimeSpan(0, 30, 0);
+                DateTime initialTime = DateTime.Now;
+                initialTime = initialTime.Subtract(interval);
+
+                var oldValues = _dbContext.LDRData.Where(p => p.TimeStamp < initialTime).ToList();
+
+                if(oldValues != null)
+                {
+                    _dbContext.LDRData.RemoveRange(oldValues);
+                }
+
                 _dbContext.Add<LDRData>(data);
                 _dbContext.SaveChanges();  
             }
