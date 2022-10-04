@@ -36,6 +36,11 @@ namespace LDRSensorA5.Services
         /// <returns>Boolean value. true if port is open and false if port is closed</returns>
         public bool IsConnected();
 
+        /// <summary>
+        /// this function is used to return the list of available ports on the PC
+        /// </summary>
+        /// <returns>list of ports in string format</returns>
+        public string[] GetPortNamesList();
 
 
         /// <summary>

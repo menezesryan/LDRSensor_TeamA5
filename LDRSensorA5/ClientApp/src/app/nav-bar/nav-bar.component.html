@@ -9,8 +9,8 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
             <div class="navbar-nav">
             <a *ngIf = "!isConnected" class="nav-link" aria-current="page" [routerLink]="['/home']">Home</a>
-            <button  *ngIf = "!isConnected" type="button" class="btn btn-primary mx-1 my-1" (click)="onConnectButtonClick()">
-                Connect</button>
+            <!-- <button  *ngIf = "!isConnected" type="button" class="btn btn-primary mx-1 my-1" (click)="onConnectButtonClick()">
+                Connect</button> -->
             <button  *ngIf="isConnected" type="button" class="btn btn-primary mx-1 my-1" (click)="onManualButtonClick()">
                 Manual</button>
             <button *ngIf="isConnected"  type="button" class="btn btn-primary mx-1 my-1" (click)="onAutomaticButtonClick()">

@@ -1,22 +1,45 @@
-<div class="row">
-  <br /><br />
-  <br />
-  <br />
-  <br />
-  <br />
-</div>
 
 <div class="container-fluid">
   <div class="row justify-content-center">
-    <div class="col-md-7">
-      <div class="card" style="padding: 5%; background-color:brown">
-        <div class="container-fluid">
-          <div class="row justify-content-center">
-            <div class="col-md-10 text-center">
-              <h1>Click on the Connect Button</h1>
-            </div>
+    <div class="col-md-6">
+      <div class="form">
+        <form [formGroup]="connectionForm">
+          <div class="form-group">
+            <select class="form-select" id="id" formControlName="port" (change)="onChangeType($event)">
+              <option selected>Select a port</option>
+              <option *ngFor="let p of portArray" [ngValue]="p">{{p}}</option>
+            </select>
           </div>
-        </div>
+          
+          <div class="form-group">
+            <label for="baud"> Baud Rate:</label>
+            <input class="form-control" type="number" name="baud" id="baud" formControlName="baud" readonly>
+          </div>
+         
+         <div class="form-group">
+          <label for="dataBit"> Data Bit:</label>
+          <input class="form-control" type="number" name="dataBit" id="dataBit" formControlName="dataBit" readonly>
+         </div>
+          
+         <div class="form-group">
+          <label for="startBit"> Start Bit:</label>
+          <input class="form-control" type="number" name="startBit" id="startBit" formControlName="startBit" readonly>
+         </div>
+          
+          <div class="form-group">
+            <label for="stopBit"> Stop Bit:</label>
+            <input class="form-control" type="number" name="stopBit" id="stopBit" formControlName="stopBit" readonly>
+          </div>
+     
+        
+          <div class="form-group">
+            <label for="parityBit"> Parity Bit:</label>
+            <input class="form-control" type="number" name="parityBit" id="parityBit" formControlName="parityBit" readonly>
+          </div>
+         <div class="form-group">
+          <button type="submit" class="btn btn-primary mx-1 my-1" id="connectModalButton" (click)="onConnectButtonClick()">Connect</button>
+         </div>
+        </form>
       </div>
     </div>
   </div>

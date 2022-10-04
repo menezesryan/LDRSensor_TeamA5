@@ -104,5 +104,21 @@ namespace LDRSensorA5.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetPortNames()
+        {
+            try
+            {
+                string[] ports = _communicationService.GetPortNamesList();
+                return Ok(ports);
+            }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
+        }
+
     }
 }

@@ -3,7 +3,7 @@ using System.IO.Ports;
 
 namespace LDRSensorA5.Services
 {
-    
+
     public delegate T InteractWithFirmware<T>(SerialPort port);
     public class CommunicationService : ICommunicationService
     {
@@ -135,7 +135,7 @@ namespace LDRSensorA5.Services
                     throw;
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 throw;
             }
@@ -143,6 +143,20 @@ namespace LDRSensorA5.Services
             {
                 Monitor.Exit(this.serialPort);
             }
+        }
+
+        public string[] GetPortNamesList()
+        {
+            string[] ports;
+            try
+            {
+                ports = SerialPort.GetPortNames();
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+            return ports;
         }
     }
 

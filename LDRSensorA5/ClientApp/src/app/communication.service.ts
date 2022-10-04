@@ -55,4 +55,13 @@ export class CommunicationService {
         catchError(this.httpError)
       )
   }
+
+  getPortNames(): Observable<string[]> {
+    return this.httpClient.get<string[]>(this.baseUrl + 'GetPortNames', this.httpHeader)
+      .pipe(
+        retry(1),
+        catchError(this.httpError)
+      )
+  }
+
 }

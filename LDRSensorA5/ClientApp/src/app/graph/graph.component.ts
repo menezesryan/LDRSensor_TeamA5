@@ -56,7 +56,9 @@ export class GraphComponent implements OnInit, OnDestroy {
     let counter = 0;
     this.intervalId = setInterval(() => {
       this.subscription = this.ldrService.getLDRData().subscribe(data => {
-        this.ldrData = data;
+        this.ldrData.current = parseFloat(data.current.toFixed(2));
+        this.ldrData.lux = parseFloat(data.current.toFixed(2))
+        this.ldrData.timeStamp = data.timeStamp
         this.plotUpdates(data)
       })
 
