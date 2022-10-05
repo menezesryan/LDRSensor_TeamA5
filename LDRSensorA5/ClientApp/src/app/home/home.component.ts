@@ -12,6 +12,7 @@ import { ConnectionParameters } from '../models/ConnectionParameters';
 })
 export class HomeComponent implements OnInit {
   portArray: string[] = []
+  portName: string
   connectionForm: FormGroup
   constructor(private communicationService: CommunicationService, fb: FormBuilder, private router: Router) {
     this.connectionForm = fb.group({
@@ -22,6 +23,7 @@ export class HomeComponent implements OnInit {
       'stopBit': [1],
       'parityBit': [1],
     })
+    this.portName = ""
   }
 
   ngOnInit(): void {
@@ -31,13 +33,14 @@ export class HomeComponent implements OnInit {
   }
 
   onChangeType(evt: any) {
-    var portName = evt.target.value.split(':')[1].trim()
-    console.log(portName)
+    this.portName = evt.target.value.split(':')[1].trim()
+    console.log(this.portName)
 
   }
 
-  onConnectButtonClick() {
-    var parameters = new ConnectionParameters(1, 1, 1, 1, 1)
+  onConnectButtonClick(value: any) {
+
+    var parameters = new ConnectionParameters(this.portName, value.baud, value.dataBit, value.startBit, value.stopBit, value.parityBit)
     this.communicationService.connect(parameters).subscribe(() => {
       location.reload()
     })

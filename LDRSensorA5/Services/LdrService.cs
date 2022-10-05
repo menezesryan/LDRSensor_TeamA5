@@ -375,5 +375,20 @@ namespace LDRSensorA5.Services
             }
             return threshold;
         }
+
+
+        public LDRData[] GetDatabaseData()
+        {
+            LDRData[] data;
+            try
+            {
+                data = _dbContext.LDRData.ToArray();
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+            return data;
+        }
     }
 }

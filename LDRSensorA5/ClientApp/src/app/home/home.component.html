@@ -3,7 +3,7 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="form">
-        <form [formGroup]="connectionForm">
+        <form [formGroup]="connectionForm" (ngSubmit)="onConnectButtonClick(connectionForm.value)" class="ui form">
           <div class="form-group">
             <select class="form-select" id="id" formControlName="port" (change)="onChangeType($event)">
               <option selected>Select a port</option>
@@ -37,7 +37,7 @@
             <input class="form-control" type="number" name="parityBit" id="parityBit" formControlName="parityBit" readonly>
           </div>
          <div class="form-group">
-          <button type="submit" class="btn btn-primary mx-1 my-1" id="connectModalButton" (click)="onConnectButtonClick()">Connect</button>
+          <button type="submit" class="btn btn-primary mx-1 my-1" id="connectModalButton">Connect</button>
          </div>
         </form>
       </div>

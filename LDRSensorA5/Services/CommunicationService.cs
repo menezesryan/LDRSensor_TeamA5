@@ -27,7 +27,7 @@ namespace LDRSensorA5.Services
                 if (serialPort == null || !serialPort.IsOpen)
                 {
 
-                    serialPort = new SerialPort("COM2", 9600, Parity.None, 8, StopBits.One);
+                    serialPort = new SerialPort(parameters.PortName, 9600, Parity.None, 8, StopBits.One);
                     serialPort.Open();
                     model.IsSucess = true;
                     model.Message = "Port opened";
