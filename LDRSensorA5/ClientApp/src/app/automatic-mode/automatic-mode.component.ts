@@ -10,6 +10,7 @@ export class AutomaticModeComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
 }

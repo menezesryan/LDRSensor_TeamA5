@@ -47,6 +47,7 @@ namespace LDRSensorA5.Controllers
         {
             try
             {
+                Console.WriteLine("connect controller");
                 var model = _communicationService.Connect(parameters);
                 return Ok(model);
             }
@@ -99,6 +100,22 @@ namespace LDRSensorA5.Controllers
                 return Ok(isConnected);
             }
             catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetPortNames()
+        {
+            try
+            {
+                string[] ports = _communicationService.GetPortNamesList();
+                return Ok(ports);
+            }
+            catch(Exception)
             {
                 return BadRequest();
             }

@@ -66,8 +66,8 @@ namespace LDRSensorA5.Services
                 data.Lux = Double.Parse(ldrData);
                 data.TimeStamp = DateTime.Now;
 
-                //transform light to current use threshold
-                data.Current = (Double.Parse(ldrData) * 1.75);
+                //transform light to current
+                //data.Current = (Double.Parse(ldrData) * 1.75);
 
                 //send current data back
 
@@ -80,16 +80,37 @@ namespace LDRSensorA5.Services
                 {
                     if (data.Lux > configuration.LowerThreshold && data.Lux < configuration.UpperThreshold)
                     {
+                        data.Current = ((data.Lux - configuration.LowerThreshold) / (configuration.UpperThreshold - configuration.LowerThreshold) * 16) + 4;
                         port.WriteLine("lux-luxCurrent-" + data.Current.ToString("N2") + "\r");
                     }
-                    else
+                    else if(data.Lux < configuration.LowerThreshold)
                     {
+                        data.Current = 4;
                         port.WriteLine("lux-luxCurrent-4\r");
+                    }
+                    else if(data.Lux > configuration.UpperThreshold)
+                    {
+                        data.Current = 20;
+                        port.WriteLine("lux-luxCurrent-20\r");
                     }
                     return 1;
                 });
 
                 //save data to database
+
+                //var first = _dbContext.LDRData.OrderBy(p => p.TimeStamp).FirstOrDefault();
+
+                TimeSpan interval = new TimeSpan(0, 2, 0);
+                DateTime initialTime = DateTime.Now;
+                initialTime = initialTime.Subtract(interval);
+
+                var oldValues = _dbContext.LDRData.Where(p => p.TimeStamp < initialTime).ToList();
+
+                if(oldValues != null)
+                {
+                    _dbContext.LDRData.RemoveRange(oldValues);
+                }
+
                 _dbContext.Add<LDRData>(data);
                 _dbContext.SaveChanges();  
             }
@@ -353,6 +374,21 @@ namespace LDRSensorA5.Services
                 throw;
             }
             return threshold;
+        }
+
+
+        public LDRData[] GetDatabaseData()
+        {
+            LDRData[] data;
+            try
+            {
+                data = _dbContext.LDRData.ToArray();
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+            return data;
         }
     }
 }

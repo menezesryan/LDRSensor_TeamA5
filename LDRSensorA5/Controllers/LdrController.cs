@@ -192,5 +192,27 @@ namespace LDRSensorA5.Controllers
                 return BadRequest();
             }
         }
+
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetDatabaseData()
+        {
+            LDRData[] data;
+
+            try
+            {
+                data = _ldrService.GetDatabaseData();
+                if(data==null)
+                {
+                    return NotFound();
+                }
+                return Ok(data);
+            }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
+        }
     }
 }

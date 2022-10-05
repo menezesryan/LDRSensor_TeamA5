@@ -1,14 +1,36 @@
+<div class="row">
+  <br /><br />
+  <br />
+</div>
+<div class="row text-center">
+  <h1>Manual Mode</h1>
+</div>
+<div class="row">
+  <br /><br />
+</div>
 <div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <form [formGroup] = "ManualModeForm" (ngSubmit) = "onManualSubmit(ManualModeForm.value)" class="ui form">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <div class="card" style="padding: 5%;">
+        <div class="container-fluid">
+          <div class="row justify-content-center">
+            <div class="col-md-10">
+              <form [formGroup]="ManualModeForm" (ngSubmit)="onManualSubmit(ManualModeForm.value)" class="ui form">
                 <div class="form-group">
-                  <label for="currentValue">Enter Current Value</label>
-                  <input type="number" formControlName = "currentValue" class="form-control" id="currentValue" aria-describedby="currentHelp" placeholder="Enter Current Value">
+                  <label for="currentValue"><h4>Enter Current Value</h4></label>
+                  <br />
+                  <input type="number" formControlName="currentValue" class="form-control" id="currentValue" aria-describedby="currentHelp" placeholder="Enter Current Value">
+                  <div *ngIf="submitted && f['currentValue'].errors" class="text-danger">
+                    <div *ngIf="f['currentValue'].errors['required']"> {{error}}</div>
+                    <div *ngIf="!f['currentValue'].errors['required']">
+                      <div *ngIf="f['currentValue'].errors['invalidValue']">Current Value must be between 4mA and 20mA</div>
+                    </div>
+                  </div>
                   <small id="currentHelp" class="form-text text-muted">Current value should be between 4mA and 20mA</small>
                 </div>
+                <br />
                 <div class="form-group">
-                  <label for="relayState">Select Relay State</label>
+                  <label for="relayState"><h4>Select Relay State</h4></label>
                   <div class="form-check">
                     <input class="form-check-input" formControlName="relayState" type="radio" name="relayState" value="ON" id="flexRadioDefault1">
                     <label class="form-check-label" for="flexRadioDefault1">
@@ -21,9 +43,57 @@
                       OFF
                     </label>
                   </div>
+                  <div *ngIf="submitted && f['relayState'].errors" class="text-danger">
+                    <div *ngIf="f['relayState'].errors['required']"> Relay State Required</div>
+                  </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <br />
+                <button type="submit" class="btn btn-primary justify-content-center ">Submit</button>
               </form>
+
+              <div *ngIf="isSubmit">
+                <div class="row">
+                  <br /><br />
+                </div>
+                <div class="col-md-10 text-center">
+                  <h5>Current Value: {{currValue}} mA</h5>
+                  <h5>Relay State: {{relayState}}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
+
+
+  <!--<div class="container-fluid">
+      <div class="row justify-content-center">
+          <div class="col-md-4">
+              <form [formGroup] = "ManualModeForm" (ngSubmit) = "onManualSubmit(ManualModeForm.value)" class="ui form">
+                  <div class="form-group">
+                    <label for="currentValue">Enter Current Value</label>
+                    <input type="number" formControlName = "currentValue" class="form-control" id="currentValue" aria-describedby="currentHelp" placeholder="Enter Current Value">
+                    <small id="currentHelp" class="form-text text-muted">Current value should be between 4mA and 20mA</small>
+                  </div>
+                  <div class="form-group">
+                    <label for="relayState">Select Relay State</label>
+                    <div class="form-check">
+                      <input class="form-check-input" formControlName="relayState" type="radio" name="relayState" value="ON" id="flexRadioDefault1">
+                      <label class="form-check-label" for="flexRadioDefault1">
+                        ON
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" formControlName="relayState" type="radio" name="relayState" value="OFF" id="flexRadioDefault2">
+                      <label class="form-check-label" for="flexRadioDefault2">
+                        OFF
+                      </label>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+          </div>
+      </div>
+  </div>-->

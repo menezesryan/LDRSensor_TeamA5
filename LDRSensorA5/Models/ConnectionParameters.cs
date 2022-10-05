@@ -6,6 +6,11 @@
    
     public class ConnectionParameters
     {
+        /// <value>
+        /// Property <c>PortName</c> stores the port with which the device is connected to
+        /// </value>
+        public string PortName { get; set; }
+
         /// <value> Property <c>BaudRate</c> stores the Baud Rate for communication with Hardware device</value>
         public int BaudRate { get; set; }
         /// <value> Property <c>DataBit</c> stores the Data Bit for communication with Hardware device</value>

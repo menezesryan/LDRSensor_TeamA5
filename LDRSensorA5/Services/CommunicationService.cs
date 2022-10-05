@@ -3,7 +3,7 @@ using System.IO.Ports;
 
 namespace LDRSensorA5.Services
 {
-    
+
     public delegate T InteractWithFirmware<T>(SerialPort port);
     public class CommunicationService : ICommunicationService
     {
@@ -23,14 +23,11 @@ namespace LDRSensorA5.Services
             ResponseModel model = new ResponseModel();
             try
             {
-                //do something
-                //Ryan you really have to do something..!
-                // :( 
-
+                Console.WriteLine("portName is " + parameters.PortName);
                 if (serialPort == null || !serialPort.IsOpen)
                 {
-
-                    serialPort = new SerialPort("COM2", 9600, Parity.None, 8, StopBits.One);
+                    
+                    serialPort = new SerialPort(parameters.PortName, 9600, Parity.None, 8, StopBits.One);
                     serialPort.Open();
                     model.IsSucess = true;
                     model.Message = "Port opened";
@@ -76,9 +73,6 @@ namespace LDRSensorA5.Services
                     model.IsSucess = false;
                     model.Message = "Port already closed";
                 }
-
-                model.IsSucess = true;
-                model.Message = "Port closed successfully";
             }
 
             catch (Exception ex)
@@ -141,7 +135,7 @@ namespace LDRSensorA5.Services
                     throw;
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 throw;
             }
@@ -149,6 +143,20 @@ namespace LDRSensorA5.Services
             {
                 Monitor.Exit(this.serialPort);
             }
+        }
+
+        public string[] GetPortNamesList()
+        {
+            string[] ports;
+            try
+            {
+                ports = SerialPort.GetPortNames();
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+            return ports;
         }
     }
 

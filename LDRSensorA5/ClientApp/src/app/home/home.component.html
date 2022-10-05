@@ -1,1 +1,64 @@
-<p>In homeeeeeeeeeeeeeee</p>
+
+<div class="container-fluid h-100" style="background-color:#D2E5F6; min-height:90vh">
+  <div class="row justify-content-center pt-5">
+    <div class="col-md-6 text-center">
+      <h3>LDR Sensor</h3>
+    </div>
+  </div>
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+      <div class="form">
+        <form [formGroup]="connectionForm" (ngSubmit)="onConnectButtonClick(connectionForm.value)" class="ui form">
+          <div class="form-group">
+            <label for="port"> Select Port:</label>
+            <select class="form-select" id="port" name="port" formControlName="port" (change)="onChangeType($event)">
+            
+              <option *ngFor="let p of portArray" [ngValue]="p">{{p}}</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="baud"> Baud Rate:</label>
+            <input class="form-control" type="number" name="baud" id="baud" formControlName="baud" readonly>
+          </div>
+         
+         <div class="form-group">
+          <label for="dataBit"> Data Bit:</label>
+          <input class="form-control" type="number" name="dataBit" id="dataBit" formControlName="dataBit" readonly>
+         </div>
+          
+         <div class="form-group">
+          <label for="startBit"> Start Bit:</label>
+          <input class="form-control" type="number" name="startBit" id="startBit" formControlName="startBit" readonly>
+         </div>
+          
+          <div class="form-group">
+            <label for="stopBit"> Stop Bit:</label>
+            <input class="form-control" type="number" name="stopBit" id="stopBit" formControlName="stopBit" readonly>
+          </div>
+        
+          <div class="form-group">
+            <label for="parityBit"> Parity Bit:</label>
+            <input class="form-control" type="text" name="parityBit" id="parityBit" formControlName="parityBit" readonly>
+          </div>
+         <div class="form-group mt-2">
+          <button type="submit" class="btn btn-primary mx-1 my-1" id="connectModalButton">Connect</button>
+         </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container poisition-fixed top-0 start-50 translate-middle-x">
+<div id="unsuccessfulToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-header">
+    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  <div class="toast-body">
+    Could not connect to port
+  </div>
+</div>
+</div>
+
+

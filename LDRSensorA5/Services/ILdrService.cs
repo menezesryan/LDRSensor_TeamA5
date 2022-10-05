@@ -68,5 +68,7 @@ namespace LDRSensorA5.Services
         /// <returns>object of type <c>LightThreshold</c> It will contain the lower and upper light
         /// threshold that were stored in the configuration.json file</returns>
         LightThreshold GetDefaultThresholdValues();
+
+        LDRData[] GetDatabaseData();
     }
 }

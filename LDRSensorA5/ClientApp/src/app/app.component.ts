@@ -10,13 +10,12 @@ import { ConnectionParameters } from './models/ConnectionParameters';
 export class AppComponent implements OnDestroy {
   title = 'app';
 
-  constructor(private communicationService:CommunicationService)
-  {
+  constructor(private communicationService: CommunicationService) {
   }
 
   ngOnDestroy(): void {
-    var parameters = new ConnectionParameters(1,1,1,1,1);
-     this.communicationService.disconnect(parameters).subscribe();
-     console.log("closed connection")
-  }  
+    var parameters = new ConnectionParameters("", 1, 1, 1, 1, 1);
+    this.communicationService.disconnect(parameters).subscribe();
+    console.log("closed connection")
+  }
 }
