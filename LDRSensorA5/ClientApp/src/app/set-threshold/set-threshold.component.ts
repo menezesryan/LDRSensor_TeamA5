@@ -6,7 +6,7 @@ import { LightThreshold } from '../models/LightThreshold';
 
 
 function lowerValidator(control: FormControl): { [s: string]: boolean } | null {
-  if (!(Number(control.value) < 200 && Number(control.value) > 10)) {
+  if ((Number(control.value) > 250 && Number(control.value) < 10)) {
     return { invalidLowerValue: true }
   }
   else {
@@ -14,7 +14,8 @@ function lowerValidator(control: FormControl): { [s: string]: boolean } | null {
   }
 }
 function upperValidator(control: FormControl): { [s: string]: boolean } | null {
-  if (!(Number(control.value) < 250 && Number(control.value) > 50)) {
+  //if ((Number(control.value) < 250 && Number(control.value) > 50)) {
+  if ((Number(control.value) > 250 && Number(control.value) < 10)) {
     return { invalidUpperValue: true }
   }
   else {
@@ -29,7 +30,6 @@ function LowerUpperCondition(lowerThreshold: string, upperThreshold: string) {
     if (upper.errors && !upper.errors['lowerUpperCondition']) {
       return
     }
-
     if (Number(lower.value) > Number(upper.value)) {
       upper.setErrors({ lowerUpperCondition: true })
 
@@ -84,7 +84,7 @@ export class SetThresholdComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.ldrService.getThresholdData().subscribe(data => {
       this.lightThreshold = data
-      
+
       console.log("hi" + this.lightThreshold.lowerThreshold + " " + this.lightThreshold.upperThreshold)
     })
   }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { CommunicationService } from '../communication.service';
+import { LDRService } from '../ldr.service';
 import { ConnectionParameters } from '../models/ConnectionParameters';
 
 @Component({
@@ -14,7 +15,7 @@ export class HomeComponent implements OnInit {
   portArray: string[] = []
   portName: string
   connectionForm: FormGroup
-  constructor(private communicationService: CommunicationService, fb: FormBuilder, private router: Router) {
+  constructor(private communicationService: CommunicationService, fb: FormBuilder, private router: Router, private ldrService: LDRService) {
     this.connectionForm = fb.group({
       'port': [],
       'baud': [9600],
@@ -39,14 +40,17 @@ export class HomeComponent implements OnInit {
   }
 
   onConnectButtonClick(value: any) {
-
-    console.log("yooooooooooooooooooooooo")
     var parameters = new ConnectionParameters(this.portName, value.baud, value.dataBit, value.startBit, value.stopBit, 0)
     this.communicationService.connect(parameters).subscribe(() => {
-      location.reload()
+      this.ldrService.getThresholdData().subscribe((data) => {
+        this.router.navigate(['/automatic-mode'])
+          .then(() => {
+            window.location.reload()
+          })
+      }, (error) => {
+        alert("error")
+      })
     })
-
-    this.router.navigate(['/automatic-mode'])
   }
 
 }

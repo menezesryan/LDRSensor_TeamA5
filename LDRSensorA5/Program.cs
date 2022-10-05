@@ -1,5 +1,7 @@
 using LDRSensorA5.Models;
 using LDRSensorA5.Services;
+using Microsoft.Extensions.Configuration;
+using System.Text.Json;
 
 namespace LDRSensorA5
 {
@@ -64,6 +66,22 @@ namespace LDRSensorA5
            
 
             app.UseCors("corsapp");
+
+            //creating the json file
+            string fileName = "configuration.json";
+            if(!File.Exists(fileName))
+            {
+                ConfigurationData configData = new ConfigurationData();
+                configData.DefaultLowerThreshold = 100;
+                configData.DefaultUpperThreshold = 200;
+                configData.UpperThreshold = 200;
+                configData.LowerThreshold = 100;
+
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                string jsonString = JsonSerializer.Serialize(configData, options);
+                File.WriteAllText(fileName, jsonString);
+            }
+            
 
             app.Run();
         }

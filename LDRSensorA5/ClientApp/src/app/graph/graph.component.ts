@@ -33,7 +33,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.graphType = "bar"
 
     this.chartTypes = ["Bar", "Line"]
-    this.timeInterval = ["10 sec", "1 min", "2 min", "5 min", "30 min"]
+    this.timeInterval = ["10 sec", "1 min", "2 min"]
 
     this.numValues = 10;
   }
@@ -151,7 +151,7 @@ export class GraphComponent implements OnInit, OnDestroy {
         flag = true;
       }
 
-      if (flag = true) {
+      if (flag == true) {
         this.XAxisLabels.length = 0
         this.YAxisValues.length = 0
         this.database.forEach(element => {
@@ -163,9 +163,6 @@ export class GraphComponent implements OnInit, OnDestroy {
           this.YAxisValues.push(element.current)
         });
       }
-
-
-      // this.chart?.update()
     })
 
 

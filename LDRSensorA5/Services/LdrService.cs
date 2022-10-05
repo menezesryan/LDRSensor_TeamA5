@@ -100,7 +100,7 @@ namespace LDRSensorA5.Services
 
                 //var first = _dbContext.LDRData.OrderBy(p => p.TimeStamp).FirstOrDefault();
 
-                TimeSpan interval = new TimeSpan(0, 30, 0);
+                TimeSpan interval = new TimeSpan(0, 2, 0);
                 DateTime initialTime = DateTime.Now;
                 initialTime = initialTime.Subtract(interval);
 
