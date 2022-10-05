@@ -47,6 +47,7 @@ namespace LDRSensorA5.Controllers
         {
             try
             {
+                Console.WriteLine("connect controller");
                 var model = _communicationService.Connect(parameters);
                 return Ok(model);
             }

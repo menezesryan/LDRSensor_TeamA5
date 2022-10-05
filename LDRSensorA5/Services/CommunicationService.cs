@@ -23,10 +23,10 @@ namespace LDRSensorA5.Services
             ResponseModel model = new ResponseModel();
             try
             {
-
+                Console.WriteLine("portName is " + parameters.PortName);
                 if (serialPort == null || !serialPort.IsOpen)
                 {
-
+                    
                     serialPort = new SerialPort(parameters.PortName, 9600, Parity.None, 8, StopBits.One);
                     serialPort.Open();
                     model.IsSucess = true;

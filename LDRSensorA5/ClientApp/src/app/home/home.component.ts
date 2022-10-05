@@ -16,12 +16,12 @@ export class HomeComponent implements OnInit {
   connectionForm: FormGroup
   constructor(private communicationService: CommunicationService, fb: FormBuilder, private router: Router) {
     this.connectionForm = fb.group({
-      'port': [0],
+      'port': [],
       'baud': [9600],
-      'dataBit': [1],
+      'dataBit': [8],
       'startBit': [1],
       'stopBit': [1],
-      'parityBit': [1],
+      'parityBit': ["None"],
     })
     this.portName = ""
   }
@@ -40,7 +40,8 @@ export class HomeComponent implements OnInit {
 
   onConnectButtonClick(value: any) {
 
-    var parameters = new ConnectionParameters(this.portName, value.baud, value.dataBit, value.startBit, value.stopBit, value.parityBit)
+    console.log("yooooooooooooooooooooooo")
+    var parameters = new ConnectionParameters(this.portName, value.baud, value.dataBit, value.startBit, value.stopBit, 0)
     this.communicationService.connect(parameters).subscribe(() => {
       location.reload()
     })

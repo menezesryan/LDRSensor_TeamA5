@@ -1,12 +1,18 @@
 
-<div class="container-fluid">
-  <div class="row justify-content-center">
+<div class="container-fluid h-100" style="background-color:#D2E5F6; min-height:90vh">
+  <div class="row justify-content-center pt-5">
+    <div class="col-md-6 text-center">
+      <h3>LDR Sensor</h3>
+    </div>
+  </div>
+  <div class="row justify-content-center mt-4">
     <div class="col-md-6">
       <div class="form">
         <form [formGroup]="connectionForm" (ngSubmit)="onConnectButtonClick(connectionForm.value)" class="ui form">
           <div class="form-group">
-            <select class="form-select" id="id" formControlName="port" (change)="onChangeType($event)">
-              <option selected>Select a port</option>
+            <label for="port"> Select Port:</label>
+            <select class="form-select" id="port" name="port" formControlName="port" (change)="onChangeType($event)">
+            
               <option *ngFor="let p of portArray" [ngValue]="p">{{p}}</option>
             </select>
           </div>
@@ -30,13 +36,12 @@
             <label for="stopBit"> Stop Bit:</label>
             <input class="form-control" type="number" name="stopBit" id="stopBit" formControlName="stopBit" readonly>
           </div>
-     
         
           <div class="form-group">
             <label for="parityBit"> Parity Bit:</label>
-            <input class="form-control" type="number" name="parityBit" id="parityBit" formControlName="parityBit" readonly>
+            <input class="form-control" type="text" name="parityBit" id="parityBit" formControlName="parityBit" readonly>
           </div>
-         <div class="form-group">
+         <div class="form-group mt-2">
           <button type="submit" class="btn btn-primary mx-1 my-1" id="connectModalButton">Connect</button>
          </div>
         </form>
