@@ -44,6 +44,8 @@ namespace LDRSensorA5.Services
 
                 _communicationService.FirmwareDataExchange((port) =>
                 {
+                    port.DiscardInBuffer();
+                    port.DiscardOutBuffer();
                     port.WriteLine("lux-luxManual-" + relaystate + "-" + manualModeData.Current + "\r");
                     return 1;
                 });

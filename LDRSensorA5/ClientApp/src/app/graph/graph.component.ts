@@ -54,16 +54,16 @@ export class GraphComponent implements OnInit, OnDestroy {
           label: 'Current',
           data: this.YAxisValues,
           backgroundColor: [
-            'rgba(255, 99, 132, 0.2)'
+            'rgba(255, 90, 100, 0.45)'
           ],
           borderColor: [
-
+            '#151424'
           ],
-          borderWidth: 1
+          borderWidth: 1.5
         }]
       },
       options: {
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         scales: {
           x: {
             min: 0
@@ -135,7 +135,6 @@ export class GraphComponent implements OnInit, OnDestroy {
         flag = true;
       }
       else if (duration == "1 min") {
-        
         this.database.splice(0, len - 60);
         this.numValues = 60;
         flag = true;

@@ -5,6 +5,12 @@ namespace LDRSensorA5.Services
 {
 
     public delegate T InteractWithFirmware<T>(SerialPort port);
+
+
+    /// <summary>
+    /// This service deals with the communication between software and hardware. Functions related
+    /// to port are present
+    /// </summary>
     public class CommunicationService : ICommunicationService
     {
         /// <value><c>SerialPort</c> object stores data like port name, baudrate, parity bit, start bit, stop bit </value>
@@ -145,6 +151,7 @@ namespace LDRSensorA5.Services
                 Monitor.Enter(this.serialPort);
                 try
                 {
+                    
                     var x = function(this.serialPort);
                     return x;
                 }

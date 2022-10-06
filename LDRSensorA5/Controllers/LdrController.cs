@@ -58,9 +58,9 @@ namespace LDRSensorA5.Controllers
                 }
                 return Ok(LdrData);
             }
-            catch(Exception)
+            catch(Exception e)
             {
-                return BadRequest();
+                return BadRequest(e.Message);
             }
         }
 

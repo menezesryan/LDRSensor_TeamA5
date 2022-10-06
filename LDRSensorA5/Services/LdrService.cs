@@ -51,30 +51,19 @@ namespace LDRSensorA5.Services
                 //--------------------
                 var ldrData = _communicationService.FirmwareDataExchange((port) =>
                 {
+                    port.DiscardInBuffer();
+                    port.DiscardOutBuffer();
                     port.WriteLine("lux-getLux\r");
                     var command = port.ReadLine();
-                    Console.WriteLine(command);
+                   
                     return command;
                 });
 
-                //string[] value=command.Split('>');
-                //string[] newvalue = value[1].Split(' ');
-                //Random random = new Random();
-                //var x = random.Next(1, 20);
 
-
-                //Console.WriteLine("after trim "+Double.Parse(newvalue[0]).ToString("N2"));
-                //data.Lux = Double.Parse(newvalue[0]);
-                //data.Current = (Double.Parse(newvalue[0]) * 1.75);
-
-
-                data.Lux = Double.Parse(ldrData);
+                Console.WriteLine(ldrData);
+                data.Lux = Convert.ToDouble(ldrData);
+                Console.WriteLine("Luxxx" + data.Lux);
                 data.TimeStamp = DateTime.Now;
-
-                //transform light to current
-                //data.Current = (Double.Parse(ldrData) * 1.75);
-
-                //send current data back
 
                 ConfigurationData configuration = new ConfigurationData();
                 string fileName = "configuration.json";
@@ -83,9 +72,10 @@ namespace LDRSensorA5.Services
 
                 _communicationService.FirmwareDataExchange((port) =>
                 {
-                    if (data.Lux > configuration.LowerThreshold && data.Lux < configuration.UpperThreshold)
+                    if (data.Lux >= configuration.LowerThreshold && data.Lux <= configuration.UpperThreshold)
                     {
                         data.Current = ((data.Lux - configuration.LowerThreshold) / (configuration.UpperThreshold - configuration.LowerThreshold) * 16) + 4;
+                        data.Current = Convert.ToDouble(data.Current.ToString("N2"));
                         port.WriteLine("lux-luxCurrent-" + data.Current.ToString("N2") + "\r");
                     }
                     else if(data.Lux < configuration.LowerThreshold)
@@ -127,8 +117,6 @@ namespace LDRSensorA5.Services
             return data;          
         }
 
-
-
         /// <summary>
         /// This function is called when the user presses the reset threshold button. It will reset the threshold
         /// to default threshold values. It will also send a command to hardware device with the changed thresholds.
@@ -161,6 +149,8 @@ namespace LDRSensorA5.Services
 
                 _communicationService.FirmwareDataExchange((port) =>
                 {
+                    port.DiscardInBuffer();
+                    port.DiscardOutBuffer();
                     port.WriteLine("lux-luxConfig-" + configuration.LowerThreshold + "-" + configuration.UpperThreshold + "\r");
                     port.WriteLine("lux-luxSave\r");
                     return 1;
@@ -215,6 +205,8 @@ namespace LDRSensorA5.Services
 
                 _communicationService.FirmwareDataExchange((port) =>
                 {
+                    port.DiscardInBuffer();
+                    port.DiscardOutBuffer();
                     port.WriteLine("lux-luxConfig-" + configuration.LowerThreshold + "-" + configuration.UpperThreshold + "\r");
                     return 1;
                 });
@@ -255,6 +247,8 @@ namespace LDRSensorA5.Services
             {
                 _communicationService.FirmwareDataExchange((port) =>
                 {
+                    port.DiscardInBuffer();
+                    port.DiscardOutBuffer();
                     port.WriteLine("lux-luxSave\r");
                     return 1;
                 });
@@ -307,8 +301,8 @@ namespace LDRSensorA5.Services
             {
                 var thresholdData = _communicationService.FirmwareDataExchange((port) =>
                 {
-                    port.ReadTimeout = 500;
-                    port.WriteTimeout = 500;
+                    port.ReadTimeout = 1000;
+                    port.WriteTimeout = 1000;
                     port.WriteLine("lux-luxRetrieve\r");
                     var command = port.ReadLine();
                     return command;
@@ -336,6 +330,8 @@ namespace LDRSensorA5.Services
 
                 _communicationService.FirmwareDataExchange((port) =>
                 {
+                    port.DiscardInBuffer();
+                    port.DiscardOutBuffer();
                     port.WriteLine("lux-luxConfig-" + threshold.LowerThreshold + "-" + threshold.UpperThreshold + "\r");
                     return 1;
 

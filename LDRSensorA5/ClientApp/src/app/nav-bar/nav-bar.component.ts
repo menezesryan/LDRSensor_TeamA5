@@ -24,16 +24,13 @@ export class NavBarComponent implements OnInit {
   }
 
   onDisconnectButtonClick() {
-    if (confirm('Are you sure you want to disconnect ?')) {
+   
       var parameters = new ConnectionParameters("", 1, 1, 1, 1, 1)
       this.communicationService.disconnect(parameters).subscribe()
       this.isConnected = false;
       console.log("status: " + this.isConnected)
       this.router.navigate(['/home'])
-    }
-    else {
-      console.log("Nope status: " + this.isConnected)
-    }
+  
     //var parameters = new ConnectionParameters(1, 1, 1, 1, 1)
     //this.communicationService.disconnect(parameters).subscribe()
     //this.isConnected = false;

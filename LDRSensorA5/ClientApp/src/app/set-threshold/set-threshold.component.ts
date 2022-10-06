@@ -6,7 +6,7 @@ import { LightThreshold } from '../models/LightThreshold';
 declare var bootstrap:any
 
 function lowerValidator(control: FormControl): { [s: string]: boolean } | null {
-  if ((Number(control.value) > 250 && Number(control.value) < 10)) {
+  if ((Number(control.value) > 250 || Number(control.value) < 10)) {
     return { invalidLowerValue: true }
   }
   else {
@@ -15,7 +15,7 @@ function lowerValidator(control: FormControl): { [s: string]: boolean } | null {
 }
 function upperValidator(control: FormControl): { [s: string]: boolean } | null {
   //if ((Number(control.value) < 250 && Number(control.value) > 50)) {
-  if ((Number(control.value) > 250 && Number(control.value) < 10)) {
+  if ((Number(control.value) > 250 || Number(control.value) < 10)) {
     return { invalidUpperValue: true }
   }
   else {
@@ -30,7 +30,7 @@ function LowerUpperCondition(lowerThreshold: string, upperThreshold: string) {
     if (upper.errors && !upper.errors['lowerUpperCondition']) {
       return
     }
-    if (Number(lower.value) > Number(upper.value)) {
+    if (Number(lower.value) >= Number(upper.value)) {
       upper.setErrors({ lowerUpperCondition: true })
 
     }
@@ -41,6 +41,43 @@ function LowerUpperCondition(lowerThreshold: string, upperThreshold: string) {
   }
 
 }
+
+// function lowerValidator(control: FormControl): { [s: string]: boolean } | null {
+//   if ((Number(control.value) > 250 && Number(control.value) < 10)) {
+//     return { invalidLowerValue: true }
+//   }
+//   else {
+//     return null
+//   }
+// }
+// function upperValidator(control: FormControl): { [s: string]: boolean } | null {
+//   //if ((Number(control.value) < 250 && Number(control.value) > 50)) {
+//   if ((Number(control.value) > 250 && Number(control.value) < 10)) {
+//     return { invalidUpperValue: true }
+//   }
+//   else {
+//     return null
+//   }
+// }
+// function LowerUpperCondition(lowerThreshold: string, upperThreshold: string) {
+//   return (formGroup: FormGroup) => {
+//     const lower = formGroup.controls[lowerThreshold]
+//     const upper = formGroup.controls[upperThreshold]
+
+//     if (upper.errors && !upper.errors['lowerUpperCondition']) {
+//       return
+//     }
+//     if (Number(lower.value) > Number(upper.value)) {
+//       upper.setErrors({ lowerUpperCondition: true })
+
+//     }
+//     else {
+//       upper.setErrors(null)
+//     }
+
+//   }
+
+// }
 
 
 @Component({
