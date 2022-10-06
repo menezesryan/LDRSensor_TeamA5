@@ -41,15 +41,42 @@ export class HomeComponent implements OnInit {
 
   onConnectButtonClick(value: any) {
     var parameters = new ConnectionParameters(this.portName, value.baud, value.dataBit, value.startBit, value.stopBit, 0)
+
     this.communicationService.connect(parameters).subscribe(() => {
-      this.ldrService.getThresholdData().subscribe((data) => {
-        this.router.navigate(['/automatic-mode'])
-          .then(() => {
-            window.location.reload()
-          })
-      }, (error) => {
-        alert("error")
+      console.log("in")
+
+      this.ldrService.getThresholdData().subscribe({
+        next:(data)=>{
+          // if(data)
+          // {
+            console.log("innmnnnn")
+            this.router.navigate(['/automatic-mode'])
+            .then(() => {
+              window.location.reload()
+            })
+          // }
+          // else
+          // {
+          //   alert("error")
+          //   this.communicationService.disconnect(parameters).subscribe()
+          // }
+          },
+        error: ()=> {
+          alert("error")
+          this.communicationService.disconnect(parameters).subscribe()
+        }
       })
+
+      // this.ldrService.getThresholdData().subscribe((data) => {
+      //   console.log("Second in")
+      //   this.router.navigate(['/automatic-mode'])
+      //     .then(() => {
+      //       window.location.reload()
+      //     })
+      // }, (error) => {
+      //   alert("error")
+      //   this.communicationService.disconnect(parameters);
+      // })
     })
   }
 

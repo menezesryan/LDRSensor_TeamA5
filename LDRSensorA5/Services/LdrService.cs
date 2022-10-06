@@ -300,7 +300,8 @@ namespace LDRSensorA5.Services
             {
                 var thresholdData = _communicationService.FirmwareDataExchange((port) =>
                 {
-
+                    port.ReadTimeout = 500;
+                    port.WriteTimeout = 500;
                     port.WriteLine("lux-luxRetrieve\r");
                     var command = port.ReadLine();
                     return command;
