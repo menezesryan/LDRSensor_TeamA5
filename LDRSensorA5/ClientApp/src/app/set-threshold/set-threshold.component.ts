@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Subscription } from 'rxjs';
 import { LDRService } from '../ldr.service';
 import { LightThreshold } from '../models/LightThreshold';
-
+declare var bootstrap:any
 
 function lowerValidator(control: FormControl): { [s: string]: boolean } | null {
   if ((Number(control.value) > 250 && Number(control.value) < 10)) {
@@ -100,7 +100,19 @@ export class SetThresholdComponent implements OnInit, OnDestroy {
       console.log(value.upperThreshold)
       this.lightThreshold = new LightThreshold(value.lowerThreshold, value.upperThreshold)
 
-      this.ldrService.setThresholdValues(this.lightThreshold).subscribe()
+      this.ldrService.setThresholdValues(this.lightThreshold).subscribe({
+
+        next: ()=>
+        {
+            const element = document.getElementById("submitToastSuccess")
+            const toast = new bootstrap.Toast(element,{
+            delay:1200,
+            autohide:true,
+            animation:true
+        })
+        toast.show();
+        }
+      })
       this.submitted = false;
       this.ThresholdForm.reset()
     }
@@ -114,6 +126,14 @@ export class SetThresholdComponent implements OnInit, OnDestroy {
       this.ldrService.getDefaultThresholdData().subscribe(data => {
         this.lightThreshold = data
         console.log(this.lightThreshold)
+
+        const element = document.getElementById("resetToastSuccess")
+            const toast = new bootstrap.Toast(element,{
+            delay:1200,
+            autohide:true,
+            animation:true
+        })
+        toast.show();
       })
     }
     )
@@ -122,7 +142,17 @@ export class SetThresholdComponent implements OnInit, OnDestroy {
   }
 
   onSaveThresholdSubmit() {
-    this.ldrService.saveThresholdData(this.lightThreshold).subscribe()
+    this.ldrService.saveThresholdData(this.lightThreshold).subscribe({
+      next: ()=>{
+        const element = document.getElementById("saveToastSuccess")
+            const toast = new bootstrap.Toast(element,{
+            delay:1200,
+            autohide:true,
+            animation:true
+        })
+        toast.show();
+      }
+    })
     console.log(this.lightThreshold.lowerThreshold)
     console.log(this.lightThreshold.upperThreshold)
   }

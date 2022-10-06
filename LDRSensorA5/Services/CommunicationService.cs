@@ -10,6 +10,17 @@ namespace LDRSensorA5.Services
         /// <value><c>SerialPort</c> object stores data like port name, baudrate, parity bit, start bit, stop bit </value>
         private SerialPort serialPort { get; set; }
 
+        /// <value>
+        /// <c>logger</c> object is used to log exceptional cases using serilog package
+        /// </value>
+        private readonly ILogger<CommunicationService> logger;
+
+        public CommunicationService(ILogger<CommunicationService> logger)
+        {
+            this.serialPort = null;
+            this.logger = logger;
+        }
+
 
         /// <summary>
         /// It establishes connection with the hardware device. The SerialPort object is created with the required
@@ -31,11 +42,13 @@ namespace LDRSensorA5.Services
                     serialPort.Open();
                     model.IsSucess = true;
                     model.Message = "Port opened";
+                    logger.LogInformation("Connection established");
             }
                 else
                 {
                     model.IsSucess = false;
                     model.Message = "Port already open";
+                    logger.LogInformation("Connection could not be established");  
                 }
             }
 
@@ -43,6 +56,7 @@ namespace LDRSensorA5.Services
             {
                 model.IsSucess = false;
                 model.Message = "Error: " + ex.Message;
+                logger.LogError(ex, "Connection could not be established");
             }
 
             return model;
@@ -67,11 +81,13 @@ namespace LDRSensorA5.Services
                     serialPort.Close();
                     model.IsSucess = true;
                     model.Message = "Port closed successfully";
+                    logger.LogInformation("Port closed successfully");
                 }
                 else
                 {
                     model.IsSucess = false;
                     model.Message = "Port already closed";
+                    logger.LogInformation("Port already closed");
                 }
             }
 
@@ -79,6 +95,7 @@ namespace LDRSensorA5.Services
             {
                 model.IsSucess = false;
                 model.Message = "Error: " + ex.Message;
+                logger.LogError(ex, "Port could not be closed");
             }
 
             return model;
@@ -103,8 +120,9 @@ namespace LDRSensorA5.Services
                     isConnected = true;
                 }
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                logger.LogError(ex, "Exception occured while checking connection");
                 throw;
             }
 
@@ -135,8 +153,9 @@ namespace LDRSensorA5.Services
                     throw;
                 }
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                logger.LogError(ex, "Firmware interaction failed");
                 throw;
             }
             finally
@@ -145,6 +164,11 @@ namespace LDRSensorA5.Services
             }
         }
 
+
+        /// <summary>
+        /// This function is used to retrieve the ports available for connection
+        /// </summary>
+        /// <returns>Array of port names</returns>
         public string[] GetPortNamesList()
         {
             string[] ports;
@@ -152,8 +176,9 @@ namespace LDRSensorA5.Services
             {
                 ports = SerialPort.GetPortNames();
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                logger.LogError(ex, "Could not get port names");
                 throw;
             }
             return ports;

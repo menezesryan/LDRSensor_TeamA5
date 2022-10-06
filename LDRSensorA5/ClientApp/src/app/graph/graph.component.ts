@@ -114,7 +114,6 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.chart?.update()
   }
 
-
   onChartChange(evt: any) {
     console.log(evt.target.value)
     this.graphType = evt.target.value.toLowerCase().trim()
@@ -136,6 +135,7 @@ export class GraphComponent implements OnInit, OnDestroy {
         flag = true;
       }
       else if (duration == "1 min") {
+        
         this.database.splice(0, len - 60);
         this.numValues = 60;
         flag = true;
@@ -160,7 +160,7 @@ export class GraphComponent implements OnInit, OnDestroy {
           var datepipe = new DatePipe("en-US")
           var time = datepipe.transform(element.timeStamp, "mediumTime")
           this.XAxisLabels.push(time!)
-          this.YAxisValues.push(element.current)
+          this.YAxisValues.push(c)
         });
       }
     })

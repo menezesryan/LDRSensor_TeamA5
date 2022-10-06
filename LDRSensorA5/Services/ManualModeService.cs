@@ -10,15 +10,18 @@ namespace LDRSensorA5.Services
     public class ManualModeService : IManualModeService
     {
         ICommunicationService _communicationService;
+        private readonly ILogger<LdrService> logger;
+
 
         /// <summary>
         /// This is the constructor for class <c>ManualModeService</c>. Here the interface <c>ICommunicationService</c>
         /// is injected
         /// </summary>
         /// <param name="communication">interface object which allows this service to access the functions</param>
-        public ManualModeService(ICommunicationService communication)
+        public ManualModeService(ICommunicationService communication, ILogger<LdrService> logger)
         {
             _communicationService = communication;
+            this.logger = logger;
         }
 
 
@@ -54,6 +57,7 @@ namespace LDRSensorA5.Services
             {
                 model.IsSucess = false;
                 model.Message ="Error" +  ex.Message;
+                logger.LogError(ex,"Could not send data to firmware in manual mode");
             }
             finally
             {

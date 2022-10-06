@@ -19,14 +19,14 @@
                 <div class="form-group">
                   <label for="currentValue"><h4>Enter Current Value</h4></label>
                   <br />
-                  <input type="number" formControlName="currentValue" class="form-control" id="currentValue" aria-describedby="currentHelp" placeholder="Enter Current Value">
+                  <input type="number" formControlName="currentValue" class="form-control" id="currentValue"  placeholder="Enter Current Value">
                   <div *ngIf="submitted && f['currentValue'].errors" class="text-danger">
                     <div *ngIf="f['currentValue'].errors['required']"> {{error}}</div>
                     <div *ngIf="!f['currentValue'].errors['required']">
                       <div *ngIf="f['currentValue'].errors['invalidValue']">Current Value must be between 4mA and 20mA</div>
                     </div>
                   </div>
-                  <small id="currentHelp" class="form-text text-muted">Current value should be between 4mA and 20mA</small>
+                  
                 </div>
                 <br />
                 <div class="form-group">

@@ -5,6 +5,7 @@ import { Chart, registerables } from 'chart.js';
 import { CommunicationService } from '../communication.service';
 import { LDRService } from '../ldr.service';
 import { ConnectionParameters } from '../models/ConnectionParameters';
+declare var bootstrap:any
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,9 @@ export class HomeComponent implements OnInit {
   portArray: string[] = []
   portName: string
   connectionForm: FormGroup
+
+ 
+
   constructor(private communicationService: CommunicationService, fb: FormBuilder, private router: Router, private ldrService: LDRService) {
     this.connectionForm = fb.group({
       'port': [],
@@ -47,23 +51,29 @@ export class HomeComponent implements OnInit {
 
       this.ldrService.getThresholdData().subscribe({
         next:(data)=>{
-          // if(data)
-          // {
+          if(data)
+          {
             console.log("innmnnnn")
             this.router.navigate(['/automatic-mode'])
             .then(() => {
               window.location.reload()
             })
-          // }
-          // else
-          // {
-          //   alert("error")
-          //   this.communicationService.disconnect(parameters).subscribe()
-          // }
+          }
+          else
+          {
+            alert("error")
+            this.communicationService.disconnect(parameters).subscribe()
+          }
           },
         error: ()=> {
-          alert("error")
           this.communicationService.disconnect(parameters).subscribe()
+          const element = document.getElementById("connectionErrorToast")
+          const toast = new bootstrap.Toast(element,{
+            delay:1200,
+            autohide:true,
+            animation:true
+          })
+          toast.show();
         }
       })
 

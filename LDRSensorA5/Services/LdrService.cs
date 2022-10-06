@@ -17,17 +17,22 @@ namespace LDRSensorA5.Services
         LdrDBContext _dbContext;
         ICommunicationService _communicationService;
 
+        /// <value>
+        /// <c>logger</c> object is used to log exceptional cases using serilog package
+        /// </value>
+        private readonly ILogger<LdrService> logger;
 
         /// <summary>
         /// This is the constructor for the class <c>LdrService</c>. Here the interface <c>ICommunicationService</c>
-        /// and the database context <c>LdrDBContext</c> are injected.
+        /// ,the logger, and the database context <c>LdrDBContext</c> are injected.
         /// </summary>
         /// <param name="communication">interface object which allows this service to access the functions</param>
         /// <param name="dbContext">object of <c>LdrDBContext</c> allows to do CRUD functionality on database</param>
-        public LdrService(ICommunicationService communication, LdrDBContext dbContext)
+        public LdrService(ICommunicationService communication, LdrDBContext dbContext, ILogger<LdrService> logger)
         {
             _communicationService = communication;
             _dbContext = dbContext;
+            this.logger = logger;
         }
 
 
@@ -114,8 +119,9 @@ namespace LDRSensorA5.Services
                 _dbContext.Add<LDRData>(data);
                 _dbContext.SaveChanges();  
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                logger.LogError(ex,"Could not get ldr data");
                 throw;
             }
             return data;          
@@ -164,12 +170,15 @@ namespace LDRSensorA5.Services
 
                 model.IsSucess = true;
                 model.Message = "Threshold Value reset successful";
+
+                logger.LogInformation("Threshold values resetted");
             }
 
             catch(Exception ex)
             {
                 model.IsSucess = false;
                 model.Message = "Error: " + ex.Message;
+                logger.LogError(ex, "Could not reset threshold values");
             }
 
             return model;
@@ -190,13 +199,6 @@ namespace LDRSensorA5.Services
 
             try
             {
-
-                //send data to the MCU
-                //update data
-
-                //set the threshold for the graph conversion
-
-                
 
                 ConfigurationData configuration = new ConfigurationData();
                 string fileName = "configuration.json";
@@ -220,12 +222,14 @@ namespace LDRSensorA5.Services
 
                 model.IsSucess = true;
                 model.Message = "Threshold values updated";
+                logger.LogInformation("Threshold values set");
             }
 
             catch(Exception ex)
             {
                 model.IsSucess = false;
                 model.Message = "Error: " + ex.Message;
+                logger.LogError(ex, "Could not set threshold values");
             }
             finally
             {
@@ -271,11 +275,14 @@ namespace LDRSensorA5.Services
 
                 model.IsSucess = true;
                 model.Message = "Threshold values updated";
+
+                logger.LogInformation("Threshold values saved in EEPROM");
             }
             catch(Exception ex)
             {
                 model.IsSucess = false;
                 model.Message = "Error: " + ex.Message;
+                logger.LogError(ex, "Could not save threshold values in EEPROM");
             }
             finally
             {
@@ -333,14 +340,11 @@ namespace LDRSensorA5.Services
                     return 1;
 
                 });
-
-                    
-                
-
-               
+                logger.LogInformation("Threshold values retrieved from EEPROM");
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                logger.LogError(ex,"Could not get threshold from EEPROM");
                 throw;
             }
             finally
@@ -369,9 +373,11 @@ namespace LDRSensorA5.Services
                 ConfigurationData configuration = JsonSerializer.Deserialize<ConfigurationData>(jsonString);
                 threshold.UpperThreshold = configuration.DefaultUpperThreshold;
                 threshold.LowerThreshold = configuration.DefaultLowerThreshold;
+                logger.LogInformation("Default threshold values retrieved");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Could not get default values from configuration.json");
                 throw;
             }
             return threshold;
@@ -380,13 +386,29 @@ namespace LDRSensorA5.Services
 
         public LDRData[] GetDatabaseData()
         {
-            LDRData[] data;
+            LDRData[] data; 
             try
             {
+                TimeSpan interval = new TimeSpan(0, 2, 0);
+                DateTime initialTime = DateTime.Now;
+                initialTime = initialTime.Subtract(interval);
+
+                var oldValues = _dbContext.LDRData.Where(p => p.TimeStamp < initialTime).ToList();
+
+                if (oldValues != null)
+                {
+                    _dbContext.LDRData.RemoveRange(oldValues);
+                }
+
+           
+                _dbContext.SaveChanges();
                 data = _dbContext.LDRData.ToArray();
+
+                logger.LogInformation("Values retrieved from database");
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                logger.LogError(ex,"Could not get data from database");
                 throw;
             }
             return data;

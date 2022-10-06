@@ -1,6 +1,7 @@
 using LDRSensorA5.Models;
 using LDRSensorA5.Services;
 using Microsoft.Extensions.Configuration;
+using Serilog;
 using System.Text.Json;
 
 namespace LDRSensorA5
@@ -29,6 +30,15 @@ namespace LDRSensorA5
             {
                 builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
             }));
+
+            var logger = new LoggerConfiguration()
+              .ReadFrom.Configuration(builder.Configuration)
+              .Enrich.FromLogContext()
+              .CreateLogger();
+
+            builder.Logging.ClearProviders();
+            builder.Logging.AddSerilog(logger);
+            builder.Host.UseSerilog(logger);
 
             var app = builder.Build();
 
@@ -66,6 +76,10 @@ namespace LDRSensorA5
            
 
             app.UseCors("corsapp");
+
+                
+
+            app.UseSerilogRequestLogging();
 
             //creating the json file
             string fileName = "configuration.json";
