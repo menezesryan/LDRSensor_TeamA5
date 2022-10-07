@@ -47,13 +47,11 @@ export class HomeComponent implements OnInit {
     var parameters = new ConnectionParameters(this.portName, value.baud, value.dataBit, value.startBit, value.stopBit, 0)
 
     this.communicationService.connect(parameters).subscribe(() => {
-      console.log("in")
 
       this.ldrService.getThresholdData().subscribe({
         next:(data)=>{
           if(data)
           {
-            console.log("innmnnnn")
             this.router.navigate(['/automatic-mode'])
             .then(() => {
               window.location.reload()
@@ -61,7 +59,7 @@ export class HomeComponent implements OnInit {
           }
           else
           {
-            alert("error")
+            
             this.communicationService.disconnect(parameters).subscribe()
           }
           },

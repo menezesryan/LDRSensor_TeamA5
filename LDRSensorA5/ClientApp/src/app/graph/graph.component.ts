@@ -143,11 +143,7 @@ export class GraphComponent implements OnInit, OnDestroy {
         this.numValues = 120;
         flag = true;
       }
-      else if (duration == "5 min") {
-        this.database.splice(0, len - 300)
-        this.numValues = 300;
-        flag = true;
-      }
+      
 
       if (flag == true) {
         this.XAxisLabels.length = 0

@@ -152,8 +152,7 @@ export class SetThresholdComponent implements OnInit, OnDestroy {
         toast.show();
       }
     })
-    console.log(this.lightThreshold.lowerThreshold)
-    console.log(this.lightThreshold.upperThreshold)
+    
   }
   get f() { return this.ThresholdForm.controls }
 }
