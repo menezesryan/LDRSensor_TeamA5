@@ -106,6 +106,12 @@ namespace LDRSensorA5.Controllers
         }
 
 
+        /// <summary>
+        /// This is the api endpoint for the backend. frontend will send get request to retrieve
+        /// the  available port names
+        /// </summary>
+        /// <returns><c>IActionResult</c> represents the response that this api endpoint will give when a request
+        /// is made. will indicate whether the request is successful or bad.</returns>
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetPortNames()

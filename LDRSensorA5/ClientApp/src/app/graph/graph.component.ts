@@ -95,8 +95,7 @@ export class GraphComponent implements OnInit, OnDestroy {
 
   plotUpdates(ldrData: LDRData) {
     console.log(ldrData)
-    // this.chart?.data.datasets[0].data.push(ldrData.current)
-    // this.chart?.data.labels?.push(ldrData.timeStamp);
+
 
     if (this.XAxisLabels.length > this.numValues) {
       this.XAxisLabels.shift()

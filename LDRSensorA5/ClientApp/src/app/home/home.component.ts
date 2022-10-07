@@ -76,17 +76,6 @@ export class HomeComponent implements OnInit {
           toast.show();
         }
       })
-
-      // this.ldrService.getThresholdData().subscribe((data) => {
-      //   console.log("Second in")
-      //   this.router.navigate(['/automatic-mode'])
-      //     .then(() => {
-      //       window.location.reload()
-      //     })
-      // }, (error) => {
-      //   alert("error")
-      //   this.communicationService.disconnect(parameters);
-      // })
     })
   }
 

@@ -30,12 +30,6 @@ export class NavBarComponent implements OnInit {
       this.isConnected = false;
       console.log("status: " + this.isConnected)
       this.router.navigate(['/home'])
-  
-    //var parameters = new ConnectionParameters(1, 1, 1, 1, 1)
-    //this.communicationService.disconnect(parameters).subscribe()
-    //this.isConnected = false;
-    //console.log("status: " + this.isConnected)
-    //this.router.navigate(['/home'])
   }
   onManualButtonClick() {
 

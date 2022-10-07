@@ -91,9 +91,7 @@ namespace LDRSensorA5.Services
                     return 1;
                 });
 
-                //save data to database
-
-                //var first = _dbContext.LDRData.OrderBy(p => p.TimeStamp).FirstOrDefault();
+             
 
                 TimeSpan interval = new TimeSpan(0, 2, 0);
                 DateTime initialTime = DateTime.Now;
